@@ -1,0 +1,40 @@
+package com.etiya.ReCapProject.api.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.etiya.ReCapProject.business.abstracts.ColorService;
+import com.etiya.ReCapProject.entities.concretes.Color;
+
+@RestController
+@RequestMapping("api/colors")
+public class ColorsController {
+	ColorService colorService;
+
+	@Autowired
+	public ColorsController(ColorService colorService) {
+		super();
+		this.colorService = colorService;
+	}
+	
+	@GetMapping("/getAll")
+	public List<Color> getAll() {
+		return this.colorService.getAll();
+	}
+	
+	@GetMapping("/getbyid")
+	public Color getById(int colorId) {
+		return this.colorService.getById(colorId);
+	}
+	
+	@PostMapping("/add")
+	public void add(@RequestBody Color color) {
+		this.colorService.add(color);
+	}
+}
