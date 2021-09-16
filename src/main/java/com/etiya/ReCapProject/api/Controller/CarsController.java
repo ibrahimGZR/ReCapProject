@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.CarService;
+import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
 
@@ -25,17 +26,32 @@ public class CarsController {
 	}
 	
 	@GetMapping("/getAll")
-	public List<Car> getAll() {
+	public DataResult<List<Car>> getAll() {
 		return this.carService.getAll();
 	}
 	
+	@GetMapping("/getbyid")
+	public DataResult<Car> getById(int carId) {
+		return this.carService.getById(carId);
+	}
+	
 	@GetMapping("/getcarsDetails")
-	public List<CarDetailDto> getCarsDetails() {
+	public DataResult<List<CarDetailDto>> getCarsDetails() {
 		return this.carService.getAllCarDetails();
 	}
 	
 	@PostMapping("/add")
-	public void add(@RequestBody Car car) {
-		this.carService.add(car);
+	public Result add(@RequestBody Car car) {
+		return this.carService.add(car);
+	}
+	
+	@PostMapping("/update")
+	public Result update(@RequestBody Car car) {
+		return this.carService.update(car);
+	}
+	
+	@PostMapping("/delete")
+	public Result delete(@RequestBody Car car) {
+		return this.carService.delete(car);
 	}
 }

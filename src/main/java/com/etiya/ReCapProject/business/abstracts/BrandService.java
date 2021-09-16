@@ -2,16 +2,17 @@ package com.etiya.ReCapProject.business.abstracts;
 
 import java.util.List;
 
+import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.Brand;
 
 public interface BrandService {
-	List<Brand> getAll();
+	DataResult<List<Brand>> getAll();
 	
-	Brand getById(int brandId);
+	DataResult<Brand> getById(int brandId);
 
-	void add(Brand brand);
+	Result add(Brand brand);
 
-	void update(Brand brand);
+	Result update(Brand brand);
 
-	void delete(Brand brand);
+	Result delete(Brand brand);
 }

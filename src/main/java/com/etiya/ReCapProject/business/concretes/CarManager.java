@@ -6,14 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CarService;
+import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.dataAccess.abstracts.CarDao;
 import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
 
 @Service
-public class CarManager implements CarService{
+public class CarManager implements CarService {
 	CarDao carDao;
-	
+
 	@Autowired
 	public CarManager(CarDao carDao) {
 		super();
@@ -21,35 +22,38 @@ public class CarManager implements CarService{
 	}
 
 	@Override
-	public List<Car> getAll() {
-		return this.carDao.findAll();
+	public DataResult<List<Car>> getAll() {
+		return new SuccessDataResult<List<Car>>(this.carDao.findAll());
 	}
 
 	@Override
-	public Car getById(int carId) {
-		return this.carDao.getById(carId);
+	public DataResult<Car> getById(int carId) {
+		return new SuccessDataResult<Car>(this.carDao.getById(carId));
 	}
 
 	@Override
-	public void add(Car car) {
+	public Result add(Car car) {
 		this.carDao.save(car);
-		
+		return new SuccessResult();
+
 	}
 
 	@Override
-	public void update(Car car) {
+	public Result update(Car car) {
 		this.carDao.save(car);
-		
+		return new SuccessResult();
+
 	}
 
 	@Override
-	public void delete(Car car) {
+	public Result delete(Car car) {
 		this.carDao.delete(car);
-		
+		return new SuccessResult();
+
 	}
 
 	@Override
-	public List<CarDetailDto> getAllCarDetails() {
-		return this.carDao.getCarWithBrandAndColorDetails();
+	public DataResult<List<CarDetailDto>> getAllCarDetails() {
+		return new SuccessDataResult<List<CarDetailDto>>(this.carDao.getCarWithBrandAndColorDetails());
 	}
 }

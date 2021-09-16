@@ -2,16 +2,17 @@ package com.etiya.ReCapProject.business.abstracts;
 
 import java.util.List;
 
+import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.Color;
 
 public interface ColorService {
-	List<Color> getAll();
-	
-	Color getById(int colorId);
+	DataResult<List<Color>> getAll();
 
-	void add(Color color);
+	DataResult<Color> getById(int colorId);
 
-	void update(Color color);
+	Result add(Color color);
 
-	void delete(Color color);
+	Result update(Color color);
+
+	Result delete(Color color);
 }
