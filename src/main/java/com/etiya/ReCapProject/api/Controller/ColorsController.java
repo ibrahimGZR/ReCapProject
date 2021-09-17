@@ -2,6 +2,8 @@ package com.etiya.ReCapProject.api.Controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.etiya.ReCapProject.business.abstracts.ColorService;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.Color;
+import com.etiya.ReCapProject.entities.requests.CreateColorRequest;
 
 @RestController
 @RequestMapping("api/colors")
@@ -35,17 +38,17 @@ public class ColorsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody Color color) {
-		return this.colorService.add(color);
+	public Result add(@Valid @RequestBody CreateColorRequest createColorRequest) {
+		return this.colorService.add(createColorRequest);
 	}
 	
 	@PostMapping("/update")
-	public Result update(@RequestBody Color color) {
-		return this.colorService.update(color);
+	public Result update(@Valid @RequestBody CreateColorRequest createColorRequest) {
+		return this.colorService.update(createColorRequest);
 	}
 	
 	@PostMapping("/delete")
-	public Result delte(@RequestBody Color color) {
-		return this.colorService.delete(color);
+	public Result delte(int colorId) {
+		return this.colorService.delete(colorId);
 	}
 }

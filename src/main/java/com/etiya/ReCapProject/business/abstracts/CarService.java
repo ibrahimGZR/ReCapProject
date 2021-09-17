@@ -6,17 +6,18 @@ import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
+import com.etiya.ReCapProject.entities.requests.CreateCarRequest;
 
 public interface CarService {
 	DataResult<List<Car>> getAll();
 
 	DataResult<Car> getById(int carId);
 
-	Result add(Car car);
+	Result add(CreateCarRequest createCarRequest);
 
-	Result update(Car car);
+	Result update(CreateCarRequest createCarRequest);
 
-	Result delete(Car car);
+	Result delete(int carId);
 	
 	DataResult<List<CarDetailDto>> getAllCarDetails();
 }

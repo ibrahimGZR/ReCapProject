@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.RentalService;
+import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.dataAccess.abstracts.RentalDao;
+import com.etiya.ReCapProject.entities.concretes.Car;
+import com.etiya.ReCapProject.entities.concretes.Customer;
 import com.etiya.ReCapProject.entities.concretes.Rental;
+import com.etiya.ReCapProject.entities.requests.CreateRentalRequest;
 
 @Service
 public class RentalManager implements RentalService {
@@ -24,45 +28,68 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public DataResult<List<Rental>> getAll() {
-		return new SuccessDataResult<List<Rental>>(this.rentalDao.findAll());
+		return new SuccessDataResult<List<Rental>>(this.rentalDao.findAll(), Messages.RentalsListed);
 	}
 
 	@Override
 	public DataResult<Rental> getById(int rentalId) {
-		return new SuccessDataResult<Rental>(this.rentalDao.getById(rentalId));
+		return new SuccessDataResult<Rental>(this.rentalDao.getById(rentalId), Messages.RentalListed);
 	}
 
 	@Override
-	public Result add(Rental rental) {
-		var result = BusinessRules.run(checkCarIsReturned(rental.getCar().getCarId()));
+	public Result add(CreateRentalRequest createRentalRequest) {
+		var result = BusinessRules.run(checkCarIsReturned());
 
 		if (result != null) {
 			return result;
 		}
+
+		Car car = new Car();
+		car.setCarId(createRentalRequest.getCarId());
+
+		Customer customer = new Customer();
+		customer.setCustomerId(createRentalRequest.getCustomerId());
+
+		Rental rental = new Rental();
+		rental.setRentDate(createRentalRequest.getRentDate());
+		rental.setReturnDate(createRentalRequest.getReturnDate());
+
+		rental.setCar(car);
+		rental.setCustomer(customer);
+
 		this.rentalDao.save(rental);
-		return new SuccessResult();
+		return new SuccessResult(Messages.RentalAdded);
 	}
 
 	@Override
-	public Result update(Rental rental) {
+	public Result update(CreateRentalRequest createRentalRequest) {
+
+		Car car = new Car();
+		car.setCarId(createRentalRequest.getCarId());
+
+		Customer customer = new Customer();
+		customer.setCustomerId(createRentalRequest.getCustomerId());
+
+		Rental rental = new Rental();
+		rental.setRentDate(createRentalRequest.getRentDate());
+		rental.setReturnDate(createRentalRequest.getReturnDate());
+
+		rental.setCar(car);
+		rental.setCustomer(customer);
+
 		this.rentalDao.save(rental);
-		return new SuccessResult();
+		return new SuccessResult(Messages.RentalUpdated);
 	}
 
 	@Override
-	public Result delete(Rental rental) {
-		this.rentalDao.delete(rental);
-		return new SuccessResult();
+	public Result delete(int rentalId) {
+		this.rentalDao.deleteById(rentalId);
+		return new SuccessResult(Messages.RentalDeleted);
 	}
 
-	private Result checkCarIsReturned(int carId) {
-		List<Rental> rentals = this.rentalDao.getByCar_CarId(carId);
-		if (rentals != null) {
-			for (Rental rental : this.rentalDao.getByCar_CarId(carId)) {
-				if (rental.getReturnDate() == null) {
-					return new ErrorResult("Araç hala müşteride teslim edilmedi");
-				}
-			}
+	private Result checkCarIsReturned() {
+		if (this.rentalDao.existsByIsCarReturnedIsFalse()) {
+			return new ErrorResult(Messages.RentalCarNotReturn);
 		}
 		return new SuccessResult();
 	}

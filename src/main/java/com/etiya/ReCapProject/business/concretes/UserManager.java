@@ -6,45 +6,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.UserService;
-import com.etiya.ReCapProject.core.dataAccess.abstracts.UserDao;
-import com.etiya.ReCapProject.core.entities.concretes.User;
+import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
+import com.etiya.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
+import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
+import com.etiya.ReCapProject.entities.requests.CreateApplicationUserRequest;
 
 @Service
 public class UserManager implements UserService {
 
-	UserDao userDao;
+	ApplicationUserDao applicationUserDao;
 
 	@Autowired
-	public UserManager(UserDao userDao) {
+	public UserManager(ApplicationUserDao applicationUserDao) {
 		super();
-		this.userDao = userDao;
+		this.applicationUserDao = applicationUserDao;
 	}
 
 	@Override
-	public DataResult<List<User>> getAll() {
-		return new SuccessDataResult<List<User>>(this.userDao.findAll());
+	public DataResult<List<ApplicationUser>> getAll() {
+		return new SuccessDataResult<List<ApplicationUser>>(this.applicationUserDao.findAll(), Messages.UsersListed);
 	}
 
 	@Override
-	public Result add(User user) {
-		this.userDao.save(user);
-		return new SuccessResult();
+	public Result add(CreateApplicationUserRequest createApplicationUserRequest) {
+
+		ApplicationUser applicationUser = new ApplicationUser();
+		applicationUser.setFirstName(createApplicationUserRequest.getFirstName());
+		applicationUser.setLastName(createApplicationUserRequest.getLastName());
+		applicationUser.setEmail(createApplicationUserRequest.getEmail());
+		applicationUser.setPassword(createApplicationUserRequest.getPassword());
+		
+
+		this.applicationUserDao.save(applicationUser);
+		return new SuccessResult(Messages.UserAdded);
 	}
 
 	@Override
-	public Result update(User user) {
-		this.userDao.save(user);
-		return new SuccessResult();
+	public Result update(CreateApplicationUserRequest createApplicationUserRequest) {
+
+		ApplicationUser applicationUser = new ApplicationUser();
+		applicationUser.setFirstName(createApplicationUserRequest.getFirstName());
+		applicationUser.setLastName(createApplicationUserRequest.getLastName());
+		applicationUser.setEmail(createApplicationUserRequest.getEmail());
+		applicationUser.setPassword(createApplicationUserRequest.getPassword());
+
+		this.applicationUserDao.save(applicationUser);
+		return new SuccessResult(Messages.UserUpdated);
 	}
 
 	@Override
-	public Result delete(User user) {
-		this.userDao.delete(user);
-		return new SuccessResult();
+	public Result delete(int applicationUserId) {
+		this.applicationUserDao.deleteById(applicationUserId);
+		return new SuccessResult(Messages.UserDeleted);
 	}
 
 }

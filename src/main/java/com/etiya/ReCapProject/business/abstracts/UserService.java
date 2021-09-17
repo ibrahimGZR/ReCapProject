@@ -2,16 +2,17 @@ package com.etiya.ReCapProject.business.abstracts;
 
 import java.util.List;
 
-import com.etiya.ReCapProject.core.entities.concretes.User;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
+import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
+import com.etiya.ReCapProject.entities.requests.CreateApplicationUserRequest;
 
 public interface UserService {
-	DataResult<List<User>> getAll();
+	DataResult<List<ApplicationUser>> getAll();
 
-	Result add(User user);
+	Result add(CreateApplicationUserRequest createApplicationUserRequest);
 
-	Result update(User user);
+	Result update(CreateApplicationUserRequest createApplicationUserRequest);
 
-	Result delete(User user);
+	Result delete(int userId);
 }

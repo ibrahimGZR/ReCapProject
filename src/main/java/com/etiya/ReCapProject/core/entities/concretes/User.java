@@ -1,27 +1,15 @@
 package com.etiya.ReCapProject.core.entities.concretes;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
-import com.etiya.ReCapProject.entities.concretes.Customer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@Table(name = "users")
+@MappedSuperclass
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +27,4 @@ public class User {
 
 	@Column(name = "password")
 	private String password;
-
-	@JsonIgnore
-	@OneToOne(mappedBy = "user")
-	private Customer customer;
 }

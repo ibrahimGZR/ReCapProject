@@ -2,23 +2,24 @@ package com.etiya.ReCapProject.business.concretes;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.BrandService;
+import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.BrandDao;
 import com.etiya.ReCapProject.entities.concretes.Brand;
+import com.etiya.ReCapProject.entities.requests.CreateBrandRequest;
 
 @Service
-public class BrandManager implements BrandService{
+public class BrandManager implements BrandService {
 
 	BrandDao brandDao;
-	
+
 	@Autowired
 	public BrandManager(BrandDao brandDao) {
 		super();
@@ -27,31 +28,39 @@ public class BrandManager implements BrandService{
 
 	@Override
 	public DataResult<List<Brand>> getAll() {
-		return new SuccessDataResult<List<Brand>>(this.brandDao.findAll());
+		return new SuccessDataResult<List<Brand>>(this.brandDao.findAll(), Messages.BrandsListed);
 	}
 
 	@Override
 	public DataResult<Brand> getById(int brandId) {
-		return new SuccessDataResult<Brand>(this.brandDao.getById(brandId));
+		return new SuccessDataResult<Brand>(this.brandDao.getById(brandId), Messages.BrandListed);
 	}
 
 	@Override
-	public Result add(Brand brand) {
+	public Result add(CreateBrandRequest createBrandRequest) {
+
+		Brand brand = new Brand();
+		brand.setBrandName(createBrandRequest.getBrandName());
+
 		this.brandDao.save(brand);
-		return new SuccessResult(); 
-		
+		return new SuccessResult(Messages.BrandAdded);
+
 	}
 
 	@Override
-	public Result update(Brand brand) {
+	public Result update(CreateBrandRequest createBrandRequest) {
+
+		Brand brand = new Brand();
+		brand.setBrandName(createBrandRequest.getBrandName());
+
 		this.brandDao.save(brand);
-		return new SuccessResult(); 
+		return new SuccessResult(Messages.BrandUpdated);
 	}
 
 	@Override
-	public Result delete(Brand brand) {
-		this.brandDao.delete(brand);
-		return new SuccessResult(); 
+	public Result delete(int brandId) {
+		this.brandDao.deleteById(brandId);
+		return new SuccessResult(Messages.BrandDeleted);
 	}
 
 }
