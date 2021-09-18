@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCarRequest {
+public class UpdateCarRequest {
 
+	@NotNull
+	private int carId;
 	
 	private String carName;
 

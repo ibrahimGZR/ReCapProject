@@ -14,6 +14,7 @@ import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
 import com.etiya.ReCapProject.entities.requests.CreateApplicationUserRequest;
+import com.etiya.ReCapProject.entities.requests.UpdateApplicationUserRequest;
 
 @Service
 public class UserManager implements UserService {
@@ -46,13 +47,14 @@ public class UserManager implements UserService {
 	}
 
 	@Override
-	public Result update(CreateApplicationUserRequest createApplicationUserRequest) {
+	public Result update(UpdateApplicationUserRequest updateApplicationUserRequest) {
 
 		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setFirstName(createApplicationUserRequest.getFirstName());
-		applicationUser.setLastName(createApplicationUserRequest.getLastName());
-		applicationUser.setEmail(createApplicationUserRequest.getEmail());
-		applicationUser.setPassword(createApplicationUserRequest.getPassword());
+		applicationUser.setUserId(updateApplicationUserRequest.getUserId());
+		applicationUser.setFirstName(updateApplicationUserRequest.getFirstName());
+		applicationUser.setLastName(updateApplicationUserRequest.getLastName());
+		applicationUser.setEmail(updateApplicationUserRequest.getEmail());
+		applicationUser.setPassword(updateApplicationUserRequest.getPassword());
 
 		this.applicationUserDao.save(applicationUser);
 		return new SuccessResult(Messages.UserUpdated);

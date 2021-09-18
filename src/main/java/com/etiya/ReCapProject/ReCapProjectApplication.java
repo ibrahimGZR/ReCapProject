@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.etiya.ReCapProject.core.utilities.results.ErrorDataResult;
+import com.etiya.ReCapProject.core.utilities.results.Result;
 
 import org.springframework.http.HttpStatus;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -27,14 +28,16 @@ public class ReCapProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReCapProjectApplication.class, args);
+		
 	}
-
+	
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.etiya.ReCapProject")).build();
 	}
 
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exception) {

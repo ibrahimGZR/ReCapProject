@@ -1,5 +1,6 @@
 package com.etiya.ReCapProject.entities.requests;
 
+import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
 
@@ -10,11 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCustomerRequest {
-
-	
-	private String companyName;
+public class UpdateBrandRequest {
 	
 	@NotNull
-	private int userId;
+	private int brandId;
+	
+	@NotNull
+	@NotBlank
+	private String brandName;
 }

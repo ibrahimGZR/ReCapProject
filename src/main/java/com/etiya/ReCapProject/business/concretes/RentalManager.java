@@ -14,6 +14,7 @@ import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.concretes.Customer;
 import com.etiya.ReCapProject.entities.concretes.Rental;
 import com.etiya.ReCapProject.entities.requests.CreateRentalRequest;
+import com.etiya.ReCapProject.entities.requests.UpdateRentalRequest;
 
 @Service
 public class RentalManager implements RentalService {
@@ -62,17 +63,18 @@ public class RentalManager implements RentalService {
 	}
 
 	@Override
-	public Result update(CreateRentalRequest createRentalRequest) {
+	public Result update(UpdateRentalRequest updateRentalRequest) {
 
 		Car car = new Car();
-		car.setCarId(createRentalRequest.getCarId());
+		car.setCarId(updateRentalRequest.getCarId());
 
 		Customer customer = new Customer();
-		customer.setCustomerId(createRentalRequest.getCustomerId());
+		customer.setCustomerId(updateRentalRequest.getCustomerId());
 
 		Rental rental = new Rental();
-		rental.setRentDate(createRentalRequest.getRentDate());
-		rental.setReturnDate(createRentalRequest.getReturnDate());
+		rental.setRentalId(updateRentalRequest.getRentalId());
+		rental.setRentDate(updateRentalRequest.getRentDate());
+		rental.setReturnDate(updateRentalRequest.getReturnDate());
 
 		rental.setCar(car);
 		rental.setCustomer(customer);

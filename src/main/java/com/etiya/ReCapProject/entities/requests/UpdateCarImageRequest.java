@@ -1,6 +1,5 @@
 package com.etiya.ReCapProject.entities.requests;
 
-
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -10,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCustomerRequest {
-
-	
-	private String companyName;
+public class UpdateCarImageRequest {
 	
 	@NotNull
-	private int userId;
+	private int carImageId;
+	
+	@NotNull
+	private int carId;
 }

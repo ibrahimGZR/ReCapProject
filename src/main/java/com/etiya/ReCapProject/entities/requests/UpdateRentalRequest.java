@@ -13,8 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest {
+public class UpdateRentalRequest {
 
+	@NotNull
+	private int rentalId;
+	
 	@NotNull
 	@NotBlank
 	private Date rentDate;

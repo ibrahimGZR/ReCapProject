@@ -1,0 +1,21 @@
+package com.etiya.ReCapProject.business.abstracts;
+
+import java.util.List;
+
+import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.Result;
+import com.etiya.ReCapProject.entities.concretes.CarImage;
+import com.etiya.ReCapProject.entities.requests.CreateCarImageRequest;
+import com.etiya.ReCapProject.entities.requests.UpdateCarImageRequest;
+
+public interface CarImageService {
+	DataResult<List<CarImage>> getAll();
+	
+	DataResult<List<CarImage>> getByCar_CarId(int carId);
+
+	Result add(CreateCarImageRequest createCarImageRequest);
+
+	Result update(UpdateCarImageRequest updateCarImageRequest);
+
+	Result delete(int carImageId);
+}

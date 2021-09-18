@@ -14,6 +14,7 @@ import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.BrandDao;
 import com.etiya.ReCapProject.entities.concretes.Brand;
 import com.etiya.ReCapProject.entities.requests.CreateBrandRequest;
+import com.etiya.ReCapProject.entities.requests.UpdateBrandRequest;
 
 @Service
 public class BrandManager implements BrandService {
@@ -48,10 +49,11 @@ public class BrandManager implements BrandService {
 	}
 
 	@Override
-	public Result update(CreateBrandRequest createBrandRequest) {
+	public Result update(UpdateBrandRequest updateBrandRequest) {
 
 		Brand brand = new Brand();
-		brand.setBrandName(createBrandRequest.getBrandName());
+		brand.setBrandId(updateBrandRequest.getBrandId());
+		brand.setBrandName(updateBrandRequest.getBrandName());
 
 		this.brandDao.save(brand);
 		return new SuccessResult(Messages.BrandUpdated);

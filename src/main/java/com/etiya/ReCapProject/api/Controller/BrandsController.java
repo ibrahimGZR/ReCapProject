@@ -15,6 +15,7 @@ import com.etiya.ReCapProject.business.abstracts.BrandService;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.Brand;
 import com.etiya.ReCapProject.entities.requests.CreateBrandRequest;
+import com.etiya.ReCapProject.entities.requests.UpdateBrandRequest;
 
 @RestController
 @RequestMapping("api/brands")
@@ -38,13 +39,13 @@ public class BrandsController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@Valid @RequestBody CreateBrandRequest brandRequest) {
-		return this.brandService.add(brandRequest);
+	public Result add(@Valid @RequestBody CreateBrandRequest createBrandRequest) {
+		return this.brandService.add(createBrandRequest);
 	}
 	
 	@PostMapping("/update")
-	public Result update(@Valid @RequestBody CreateBrandRequest brandRequest) {
-		return this.brandService.update(brandRequest);
+	public Result update(@Valid @RequestBody UpdateBrandRequest updateBrandRequest) {
+		return this.brandService.update(updateBrandRequest);
 	}
 	
 	@PostMapping("/delete")
