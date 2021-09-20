@@ -2,6 +2,7 @@ package com.etiya.ReCapProject.entities.requests;
 
 
 
+
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -16,4 +17,6 @@ public class CreateCarImageRequest {
 	
 	@NotNull
 	private int carId;
+	
+	
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.etiya.ReCapProject.core.utilities.results.ErrorDataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 
+import net.bytebuddy.description.modifier.MethodArguments;
+
 import org.springframework.http.HttpStatus;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -51,5 +53,7 @@ public class ReCapProjectApplication {
 		ErrorDataResult<Object> error = new ErrorDataResult<Object>(validationErrors, "Doğrulama hataları");
 		return error;
 	}
+	
+	
 
 }

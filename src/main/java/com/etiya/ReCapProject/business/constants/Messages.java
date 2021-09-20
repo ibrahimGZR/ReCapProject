@@ -3,6 +3,7 @@ package com.etiya.ReCapProject.business.constants;
 public class Messages{
     
 	
+	
 	//Car 
     public static String CarAdded = "Araba eklendi";
     public static String CarDeleted = "Araba silindi";
@@ -14,6 +15,8 @@ public class Messages{
     public static String CarDetailsListed = "Arabalar detayları ile listelendi";
     public static String CarDailyPriceInvalid= "Araba günlük fiyat bilgisi geçersiz";
     public static String CarNameAlreadyExists= "Bu isimde zaten başka araba var";
+    public static String CarsListedByColor = "Arabalar seçilen renge göre listelendi";
+	public static String CarsListedByBrand = "Arabalar seçilen markaya göre listelendi";
 
     //Brand
     public static String BrandAdded = "Marka eklendi";

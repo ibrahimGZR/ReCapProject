@@ -16,6 +16,7 @@ import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.Rental;
 import com.etiya.ReCapProject.entities.requests.CreateRentalRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteRentalRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateRentalRequest;
 
 @RestController
@@ -50,7 +51,7 @@ public class RentalsController {
 	}
 
 	@PostMapping("/delete")
-	public Result delte(int rentalId) {
-		return this.rentalService.delete(rentalId);
+	public Result delte(DeleteRentalRequest deleteRentalRequest) {
+		return this.rentalService.delete(deleteRentalRequest);
 	}
 }

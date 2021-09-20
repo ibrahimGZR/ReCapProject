@@ -15,6 +15,7 @@ import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
 import com.etiya.ReCapProject.entities.requests.CreateApplicationUserRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteApplicationUserRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateApplicationUserRequest;
 
 @RestController
@@ -43,7 +44,7 @@ public class UsersController {
 	}
 	
 	@PostMapping("/delete")
-	public Result delete(int UserId) {
-		return this.userService.delete(UserId);
+	public Result delete(DeleteApplicationUserRequest deleteApplicationUserRequest) {
+		return this.userService.delete(deleteApplicationUserRequest);
 	}
 }

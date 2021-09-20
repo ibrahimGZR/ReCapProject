@@ -25,10 +25,4 @@ public class UpdateRentalRequest {
 	@NotNull
 	@NotBlank
 	private Date returnDate;
-	
-	@NotNull
-	private int carId;
-	
-	@NotNull
-	private int customerId;
 }

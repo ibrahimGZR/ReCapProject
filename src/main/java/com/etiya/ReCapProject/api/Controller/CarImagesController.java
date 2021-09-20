@@ -15,7 +15,12 @@ import com.etiya.ReCapProject.business.abstracts.CarImageService;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.CarImage;
 import com.etiya.ReCapProject.entities.requests.CreateCarImageRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteCarImageRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateCarImageRequest;
+
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/carimages")
@@ -32,15 +37,16 @@ public class CarImagesController {
 	public DataResult<List<CarImage>> getAll() {
 		return this.carImageService.getAll();
 	}
-	
+
 	@GetMapping("/getbycarid")
-	public DataResult<List<CarImage>> getByCar_CarId(int carId){
-		return this.carImageService.getByCar_CarId(carId);
+	public DataResult<List<CarImage>> getByCar_CarId(int carId) {
+		return this.carImageService.getCarImagesByCarId(carId);
 	}
 
 	@PostMapping("/add")
-	public Result add(@Valid @RequestBody CreateCarImageRequest createCarImageRequest) {
-		return this.carImageService.add(createCarImageRequest);
+	public Result add(@Valid CreateCarImageRequest createCarImageRequest, MultipartFile file) throws IOException {
+		System.out.println(); 
+		return this.carImageService.add(createCarImageRequest, file);
 	}
 
 	@PostMapping("/update")
@@ -49,7 +55,7 @@ public class CarImagesController {
 	}
 
 	@PostMapping("/delete")
-	public Result delete(int carImageId) {
-		return this.carImageService.delete(carImageId);
+	public Result delete(DeleteCarImageRequest deleteCarImageRequest) {
+		return this.carImageService.delete(deleteCarImageRequest);
 	}
 }

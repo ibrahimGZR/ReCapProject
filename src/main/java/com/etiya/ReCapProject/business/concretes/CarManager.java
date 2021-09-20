@@ -1,6 +1,5 @@
 package com.etiya.ReCapProject.business.concretes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,10 @@ import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.dataAccess.abstracts.CarDao;
 import com.etiya.ReCapProject.entities.concretes.Brand;
 import com.etiya.ReCapProject.entities.concretes.Car;
-import com.etiya.ReCapProject.entities.concretes.CarImage;
 import com.etiya.ReCapProject.entities.concretes.Color;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
 import com.etiya.ReCapProject.entities.requests.CreateCarRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteCarRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateCarRequest;
 
 @Service
@@ -30,19 +29,12 @@ public class CarManager implements CarService {
 
 	@Override
 	public DataResult<List<Car>> getAll() {
+		return new SuccessDataResult<List<Car>>(this.carDao.findAll(), Messages.CarsListed);
 
-		return new SuccessDataResult<List<Car>>(
-				returnCarsWithDefaultImageWhereCarImageIsNull(this.carDao.findAll()).getData(), Messages.CarsListed);
 	}
 
 	@Override
 	public DataResult<Car> getById(int carId) {
-
-		if (this.returnCarWithDefaultImageIfCarImageIsNull(carId).isSuccess()) {
-			return new SuccessDataResult<Car>(this.returnCarWithDefaultImageIfCarImageIsNull(carId).getData(),
-					Messages.CarListed);
-		}
-
 		return new SuccessDataResult<Car>(this.carDao.getById(carId), Messages.CarListed);
 
 	}
@@ -95,56 +87,36 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public Result delete(int carId) {
+	public Result delete(DeleteCarRequest deleteCarRequest) {
+		Car car = new Car();
+		car.setCarId(deleteCarRequest.getCarId());
 
-		this.carDao.deleteById(carId);
+		this.carDao.delete(car);
 		return new SuccessResult(Messages.CarDeleted);
 
 	}
 
 	@Override
-	public DataResult<List<CarDetailDto>> getAllCarDetails() {
+	public DataResult<List<CarDetailDto>> getAllCarsDetails() {
 
 		return new SuccessDataResult<List<CarDetailDto>>(this.carDao.getCarsWithBrandAndColorDetail(),
 				Messages.CarDetailsListed);
 	}
 
-	private DataResult<Car> returnCarWithDefaultImageIfCarImageIsNull(int carId) {
-
-		if (!this.carDao.existsByCarImagesIsNullAndCarId(carId)) {
-			return new ErrorDataResult<Car>();
-		}
-
-		CarImage carImage = new CarImage();
-		carImage.setImagePath("carImages/default.jpg");
-
-		List<CarImage> carImages = new ArrayList<CarImage>();
-		carImages.add(carImage);
-
-		Car car = this.carDao.getById(carId);
-		car.setCarImages(carImages);
-
-		return new SuccessDataResult<Car>(car, "Resimi olmayan Araba Default resim ile listelendi");
-
+	@Override
+	public DataResult<CarDetailDto> getCarDetailsByCarId(int carId) {
+		return new SuccessDataResult<CarDetailDto>(this.carDao.getCarWithBrandAndColorDetail(carId),
+				Messages.CarDetailsListed);
 	}
 
-	private DataResult<List<Car>> returnCarsWithDefaultImageWhereCarImageIsNull(List<Car> cars) {
-
-		CarImage carImage = new CarImage();
-		carImage.setImagePath("carImages/default.jpg");
-
-		List<CarImage> carImages = new ArrayList<CarImage>();
-		carImages.add(carImage);
-
-		if (this.carDao.existsByCarImagesIsNull()) {
-			for (Car car : cars) {
-				if (this.carDao.existsByCarImagesIsNullAndCarId(car.getCarId())) {
-					car.setCarImages(carImages);
-				}
-			}
-		}
-
-		return new SuccessDataResult<List<Car>>(cars, "Resimleri olmayan arabalar Default resim ile listelendi");
-
+	@Override
+	public DataResult<List<Car>> getCarsByColorId(int colorId) {
+		return new SuccessDataResult<List<Car>>(this.carDao.getByColor_ColorId(colorId), Messages.CarsListedByColor);
 	}
+
+	@Override
+	public DataResult<List<Car>> getCarsByBrandId(int brandId) {
+		return new SuccessDataResult<List<Car>>(this.carDao.getByBrand_BrandId(brandId), Messages.CarsListedByBrand);
+	}
+
 }

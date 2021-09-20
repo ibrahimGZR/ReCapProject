@@ -16,6 +16,7 @@ import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.Customer;
 import com.etiya.ReCapProject.entities.requests.CreateCustomerRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteCustomerRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateCustomerRequest;
 
 @RestController
@@ -50,7 +51,7 @@ public class CustomersController {
 	}
 	
 	@PostMapping("/delete")
-	public Result delte(int customerId) {
-		return this.customerService.delete(customerId);
+	public Result delte(DeleteCustomerRequest deleteCustomerRequest) {
+		return this.customerService.delete(deleteCustomerRequest);
 	}
 }

@@ -11,6 +11,7 @@ import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.dataAccess.abstracts.ColorDao;
 import com.etiya.ReCapProject.entities.concretes.Color;
 import com.etiya.ReCapProject.entities.requests.CreateColorRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteColorRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateColorRequest;
 
 @Service
@@ -57,8 +58,11 @@ public class ColorManager implements ColorService {
 	}
 
 	@Override
-	public Result delete(int colorId) {
-		this.colorDao.deleteById(colorId);
+	public Result delete(DeleteColorRequest deleteColorRequest) {
+		Color color = new Color();
+		color.setColorId(deleteColorRequest.getColorId());
+		
+		this.colorDao.delete(color);
 		return new SuccessResult(Messages.ColorDeleted);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.entities.concretes.Brand;
 import com.etiya.ReCapProject.entities.requests.CreateBrandRequest;
+import com.etiya.ReCapProject.entities.requests.DeleteBrandRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateBrandRequest;
 
 public interface BrandService {
@@ -16,5 +17,5 @@ public interface BrandService {
 
 	Result update(UpdateBrandRequest updateBrandRequest);
 
-	Result delete(int brandId);
+	Result delete(DeleteBrandRequest deleteBrandRequest);
 }
