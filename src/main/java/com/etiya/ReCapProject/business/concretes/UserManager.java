@@ -20,7 +20,7 @@ import com.etiya.ReCapProject.entities.requests.UpdateApplicationUserRequest;
 @Service
 public class UserManager implements UserService {
 
-	ApplicationUserDao applicationUserDao;
+	private ApplicationUserDao applicationUserDao;
 
 	@Autowired
 	public UserManager(ApplicationUserDao applicationUserDao) {
@@ -41,7 +41,6 @@ public class UserManager implements UserService {
 		applicationUser.setLastName(createApplicationUserRequest.getLastName());
 		applicationUser.setEmail(createApplicationUserRequest.getEmail());
 		applicationUser.setPassword(createApplicationUserRequest.getPassword());
-		
 
 		this.applicationUserDao.save(applicationUser);
 		return new SuccessResult(Messages.UserAdded);
@@ -50,8 +49,7 @@ public class UserManager implements UserService {
 	@Override
 	public Result update(UpdateApplicationUserRequest updateApplicationUserRequest) {
 
-		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setUserId(updateApplicationUserRequest.getUserId());
+		ApplicationUser applicationUser = this.applicationUserDao.getById(updateApplicationUserRequest.getUserId());
 		applicationUser.setFirstName(updateApplicationUserRequest.getFirstName());
 		applicationUser.setLastName(updateApplicationUserRequest.getLastName());
 		applicationUser.setEmail(updateApplicationUserRequest.getEmail());
@@ -63,9 +61,9 @@ public class UserManager implements UserService {
 
 	@Override
 	public Result delete(DeleteApplicationUserRequest deleteApplicationUserRequest) {
-		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setUserId(deleteApplicationUserRequest.getUserId());
-		
+
+		ApplicationUser applicationUser = this.applicationUserDao.getById(deleteApplicationUserRequest.getUserId());
+
 		this.applicationUserDao.delete(applicationUser);
 		return new SuccessResult(Messages.UserDeleted);
 	}

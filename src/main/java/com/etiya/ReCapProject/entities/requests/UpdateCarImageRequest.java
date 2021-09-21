@@ -1,5 +1,10 @@
 package com.etiya.ReCapProject.entities.requests;
 
+import javax.validation.constraints.NotBlank;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -15,5 +20,7 @@ public class UpdateCarImageRequest {
 	private int carImageId;
 	
 	@NotNull
-	private int carId;
+	@NotBlank
+	@JsonIgnore
+	private MultipartFile file;
 }

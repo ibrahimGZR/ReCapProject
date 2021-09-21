@@ -11,6 +11,7 @@ import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
+import com.etiya.ReCapProject.dataAccess.abstracts.ApplicationUserDao;
 import com.etiya.ReCapProject.dataAccess.abstracts.CustomerDao;
 import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
 import com.etiya.ReCapProject.entities.concretes.Customer;
@@ -20,12 +21,15 @@ import com.etiya.ReCapProject.entities.requests.UpdateCustomerRequest;
 
 @Service
 public class CustomerManager implements CustomerService {
-	CustomerDao customerDao;
-
+	
+	private CustomerDao customerDao;
+	private ApplicationUserDao applicationUserDao; 
+	
 	@Autowired
-	public CustomerManager(CustomerDao customerDao) {
+	public CustomerManager(CustomerDao customerDao, ApplicationUserDao applicationUserDao) {
 		super();
 		this.customerDao = customerDao;
+		this.applicationUserDao = applicationUserDao;
 	}
 
 	@Override
@@ -41,8 +45,7 @@ public class CustomerManager implements CustomerService {
 	@Override
 	public Result add(CreateCustomerRequest createCustomerRequest) {
 		
-		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setUserId(createCustomerRequest.getUserId());
+		ApplicationUser applicationUser = this.applicationUserDao.getById(createCustomerRequest.getUserId());
 		
 		Customer customer = new Customer();
 		customer.setCompanyName(createCustomerRequest.getCompanyName());
@@ -57,11 +60,9 @@ public class CustomerManager implements CustomerService {
 	@Override
 	public Result update(UpdateCustomerRequest updateCustomerRequest) {
 		
-		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setUserId(updateCustomerRequest.getUserId());
+		ApplicationUser applicationUser = this.applicationUserDao.getById(updateCustomerRequest.getUserId());
 		
-		Customer customer = new Customer();
-		customer.setCustomerId(updateCustomerRequest.getCustomerId());
+		Customer customer = this.customerDao.getById(updateCustomerRequest.getCustomerId());
 		customer.setCompanyName(updateCustomerRequest.getCompanyName());
 		
 		customer.setApplicationUser(applicationUser);
@@ -72,8 +73,8 @@ public class CustomerManager implements CustomerService {
 
 	@Override
 	public Result delete(DeleteCustomerRequest deleteCustomerRequest) {
-		Customer customer = new Customer();
-		customer.setCustomerId(deleteCustomerRequest.getCustomerId());
+		
+		Customer customer = this.customerDao.getById(deleteCustomerRequest.getCustomerId());
 		
 		this.customerDao.delete(customer);
 		return new SuccessResult(Messages.CustomerDeleted);

@@ -1,26 +1,23 @@
 package com.etiya.ReCapProject.api.Controller;
 
+import java.io.IOException;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.etiya.ReCapProject.business.abstracts.CarImageService;
-import com.etiya.ReCapProject.core.utilities.results.*;
+import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.CarImage;
 import com.etiya.ReCapProject.entities.requests.CreateCarImageRequest;
 import com.etiya.ReCapProject.entities.requests.DeleteCarImageRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateCarImageRequest;
-
-import java.io.IOException;
-
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/carimages")
@@ -44,13 +41,23 @@ public class CarImagesController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@Valid CreateCarImageRequest createCarImageRequest, MultipartFile file) throws IOException {
-		System.out.println(); 
-		return this.carImageService.add(createCarImageRequest, file);
+	public Result add(@RequestParam("carId") int carId, MultipartFile file) throws IOException {
+
+		CreateCarImageRequest createCarImageRequest = new CreateCarImageRequest();
+		createCarImageRequest.setCarId(carId);
+		createCarImageRequest.setFile(file);
+
+		return this.carImageService.add(createCarImageRequest);
 	}
 
 	@PostMapping("/update")
-	public Result update(@Valid @RequestBody UpdateCarImageRequest updateCarImageRequest) {
+	public Result update(@RequestParam("carImageId") int carImageId, @RequestParam("file")  MultipartFile file)
+			throws IOException {
+
+		UpdateCarImageRequest updateCarImageRequest = new UpdateCarImageRequest();
+		updateCarImageRequest.setCarImageId(carImageId);
+		updateCarImageRequest.setFile(file);
+
 		return this.carImageService.update(updateCarImageRequest);
 	}
 

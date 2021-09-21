@@ -20,7 +20,7 @@ import com.etiya.ReCapProject.entities.requests.UpdateBrandRequest;
 @Service
 public class BrandManager implements BrandService {
 
-	BrandDao brandDao;
+	private BrandDao brandDao;
 
 	@Autowired
 	public BrandManager(BrandDao brandDao) {
@@ -52,8 +52,7 @@ public class BrandManager implements BrandService {
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
 
-		Brand brand = new Brand();
-		brand.setBrandId(updateBrandRequest.getBrandId());
+		Brand brand = this.brandDao.getById(updateBrandRequest.getBrandId());
 		brand.setBrandName(updateBrandRequest.getBrandName());
 
 		this.brandDao.save(brand);
@@ -62,8 +61,7 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
-		Brand brand = new Brand();
-		brand.setBrandId(deleteBrandRequest.getBrandId());
+		Brand brand = this.brandDao.getById(deleteBrandRequest.getBrandId());
 		
 		this.brandDao.delete(brand);
 		return new SuccessResult(Messages.BrandDeleted);

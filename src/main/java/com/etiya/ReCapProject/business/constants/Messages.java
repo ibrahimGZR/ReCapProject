@@ -4,6 +4,8 @@ public class Messages{
     
 	
 	
+	
+	
 	//Car 
     public static String CarAdded = "Araba eklendi";
     public static String CarDeleted = "Araba silindi";
@@ -62,6 +64,8 @@ public class Messages{
     public static String CarImageUpdated = "Araba resmi güncellendi";
     public static String CarImagesListed = "Araba resimleri listelendi";
     public static String CarImagesCountOfCarError = "Arabaya ait resim sayısı 5'den fazla olamaz";
+    public static String CarImageIsNotSelected = "Herhangi bir resim seçmediniz";
+    public static String CarImageTypeIsNotMatched = "Lütfen jpeg, jpg, png uzantılı resim seçiniz";
 
     //Auth
     public static String AuthorizationDenied = "Yetkiniz yok";
