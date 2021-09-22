@@ -1,18 +1,15 @@
 package com.etiya.ReCapProject.entities.concretes;
 
-import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -24,21 +21,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler","rentals"})
-@Table(name = "customers")
-public class Customer {
+@Table(name = "individual_customers")
+public class IndividualCustomer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_id")
-	private int customerId;
+	@Column(name = "individual_customer_id")
+	private int individualCustomerId;
 	
-	@Column(name = "company_name")
-	private String companyName;
+	@Column(name = "first_name")
+	private String firstName;
+
+	@Column(name = "last_name")
+	private String lastName;
 	
-	@OneToOne
+	@Column(name = "national_identity_number")
+	private String nationalIdentityNumber;
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private ApplicationUser applicationUser;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "customer")
-	private List<Rental> rentals;
+	
 }

@@ -12,14 +12,30 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateApplicationUserRequest {
-
+public class RegisterIndividualCustomerRequest {
+	
+	@NotBlank
+	@NotNull
+	private String firstName;
+	
+	@NotBlank
+	@NotNull
+	private String lastName;
+	
+	@NotBlank
+	@NotNull
+	private String nationalIdentityNumber;;
+	
 	@NotBlank
 	@NotNull
 	@Email
 	private String email;
-
+	
 	@NotBlank
 	@NotNull
 	private String password;
+	
+	@NotBlank
+	@NotNull
+	private String passwordConfirm;
 }

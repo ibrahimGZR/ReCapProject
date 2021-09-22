@@ -44,6 +44,10 @@ public class CarsController {
 	public DataResult<List<CarDetailDto>> getCarsDetails() {
 		return this.carService.getAllCarsDetails();
 	}
+	@GetMapping("/getcarDetails")
+	DataResult<CarDetailDto> getCarDetailsByCarId(int carId){
+		return this.carService.getCarDetailsByCarId(carId);
+	}
 	
 	@GetMapping("/getcarsbycolor")
 	public DataResult<List<Car>> getCarsByColorId(int colorId) {

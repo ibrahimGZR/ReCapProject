@@ -6,19 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CarService;
-import com.etiya.ReCapProject.business.abstracts.CustomerService;
+import com.etiya.ReCapProject.business.abstracts.CorporateCustomerService;
+import com.etiya.ReCapProject.business.abstracts.IndividualCustomerService;
 import com.etiya.ReCapProject.business.abstracts.RentalService;
+import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.ErrorDataResult;
 import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.RentalDao;
+import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
 import com.etiya.ReCapProject.entities.concretes.Car;
-import com.etiya.ReCapProject.entities.concretes.Customer;
 import com.etiya.ReCapProject.entities.concretes.Rental;
+import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
+import com.etiya.ReCapProject.entities.dtos.CorporateCustomerDetailDto;
+import com.etiya.ReCapProject.entities.dtos.IndividualCustomerDetailDto;
+import com.etiya.ReCapProject.entities.dtos.RentalDetailDto;
 import com.etiya.ReCapProject.entities.requests.CreateRentalRequest;
 import com.etiya.ReCapProject.entities.requests.DeleteRentalRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateRentalRequest;
@@ -28,14 +35,19 @@ public class RentalManager implements RentalService {
 
 	private RentalDao rentalDao;
 	private CarService carService;
-	private CustomerService customerService;
+	private UserService userService;
+	private IndividualCustomerService individualCustomerService;
+	private CorporateCustomerService corporateCustomerService;
 
 	@Autowired
-	public RentalManager(RentalDao rentalDao, CarService carService, CustomerService customerService) {
+	public RentalManager(RentalDao rentalDao, CarService carService, UserService userService,
+			IndividualCustomerService individualCustomerService,CorporateCustomerService corporateCustomerService) {
 		super();
 		this.rentalDao = rentalDao;
 		this.carService = carService;
-		this.customerService = customerService;
+		this.userService = userService;
+		this.individualCustomerService = individualCustomerService;
+		this.corporateCustomerService = corporateCustomerService;
 	}
 
 	@Override
@@ -58,14 +70,14 @@ public class RentalManager implements RentalService {
 
 		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
 
-		Customer customer = this.customerService.getById(createRentalRequest.getCustomerId()).getData();
+		ApplicationUser applicationUser = this.userService.getById(createRentalRequest.getUserId()).getData();
 
 		Rental rental = new Rental();
 		rental.setRentDate(createRentalRequest.getRentDate());
 		rental.setReturnDate(createRentalRequest.getReturnDate());
 
 		rental.setCar(car);
-		rental.setCustomer(customer);
+		rental.setApplicationUser(applicationUser);
 
 		this.rentalDao.save(rental);
 		return new SuccessResult(Messages.RentalAdded);
@@ -74,9 +86,13 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) {
 
+		Car car = this.carService.getById(updateRentalRequest.getCarId()).getData();
+
 		Rental rental = this.rentalDao.getById(updateRentalRequest.getRentalId());
-		rental.setRentDate(updateRentalRequest.getRentDate());
 		rental.setReturnDate(updateRentalRequest.getReturnDate());
+		rental.setRentalId(updateRentalRequest.getRentalId());
+
+		rental.setCar(car);
 
 		this.rentalDao.save(rental);
 		return new SuccessResult(Messages.RentalUpdated);
@@ -84,7 +100,7 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result delete(DeleteRentalRequest deleteRentalRequest) {
-		
+
 		Rental rental = this.rentalDao.getById(deleteRentalRequest.getRentalId());
 
 		this.rentalDao.delete(rental);
@@ -96,6 +112,49 @@ public class RentalManager implements RentalService {
 			return new ErrorResult(Messages.RentalCarNotReturn);
 		}
 		return new SuccessResult();
+	}
+
+	@Override
+	public DataResult<RentalDetailDto> getRentalDetailsByRentalId(int rentalId) {
+
+		Rental rental = this.rentalDao.getById(rentalId);
+
+		RentalDetailDto rentalDetailDto = new RentalDetailDto();
+		CarDetailDto carDetailDto = this.carService.getCarDetailsByCarId(rental.getCar().getCarId()).getData();
+		
+
+		if (this.individualCustomerService.existsByUserId(rental.getApplicationUser().getUserId()).isSuccess()) {
+			
+			IndividualCustomerDetailDto individualCustomerDetailDto = this.individualCustomerService
+					.getIndividualCustomerDetailsById(
+							rental.getApplicationUser().getIndividualCustomer().getIndividualCustomerId())
+					.getData();
+			
+			rentalDetailDto.setRentDate(rental.getRentDate());
+			rentalDetailDto.setReturnDate(rental.getReturnDate());
+			rentalDetailDto.setCarDetailDto(carDetailDto);
+			rentalDetailDto.setCustomerDto(individualCustomerDetailDto);
+
+			return new SuccessDataResult<RentalDetailDto>(rentalDetailDto, "kiralama işlemi detayları bireysel");
+		}
+		if (this.corporateCustomerService.existsByUserId(rental.getApplicationUser().getUserId()).isSuccess()) {
+			
+			CorporateCustomerDetailDto corporateCustomerDetailDto = this.corporateCustomerService
+					.getCorporateCustomerDetailsById(
+							rental.getApplicationUser().getCorporateCustomer().getCorporateCustomerId())
+					.getData();
+			
+			rentalDetailDto.setRentDate(rental.getRentDate());
+			rentalDetailDto.setReturnDate(rental.getReturnDate());
+			rentalDetailDto.setCarDetailDto(carDetailDto);
+			rentalDetailDto.setCustomerDto(corporateCustomerDetailDto);
+
+			return new SuccessDataResult<RentalDetailDto>(rentalDetailDto, "kiralama işlemi detayları kurumsal");
+		}
+		
+		
+
+		return new ErrorDataResult<RentalDetailDto>();
 	}
 
 }

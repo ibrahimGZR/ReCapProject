@@ -1,14 +1,12 @@
 package com.etiya.ReCapProject.entities.concretes;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,28 +19,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@Table(name = "rentals")
-public class Rental {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler","rentals"})
+@Table(name = "corporate_customers")
+public class CorporateCustomer{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "rental_id")
-	private int rentalId;
-
-	@Column(name = "rent_date")
-	private Date rentDate;
-
-	@Column(name = "return_date")
-	private Date returnDate;
-
-	@Column(name = "is_car_returned", columnDefinition = "boolean default false")
-	private boolean isCarReturned;
-
-	@ManyToOne
-	@JoinColumn(name = "car_id")
-	private Car car;
-
-	@ManyToOne
+	@Column(name = "corporate_customer_id")
+	private int corporateCustomerId;
+	
+	@Column(name = "company_name")
+	private String companyName;
+	
+	@Column(name = "tax_number")
+	private String taxNumber;
+	
+	@OneToOne
 	@JoinColumn(name = "user_id")
 	private ApplicationUser applicationUser;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
@@ -42,8 +43,6 @@ public class UserManager implements UserService {
 	public Result add(CreateApplicationUserRequest createApplicationUserRequest) {
 
 		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setFirstName(createApplicationUserRequest.getFirstName());
-		applicationUser.setLastName(createApplicationUserRequest.getLastName());
 		applicationUser.setEmail(createApplicationUserRequest.getEmail());
 		applicationUser.setPassword(createApplicationUserRequest.getPassword());
 
@@ -55,8 +54,6 @@ public class UserManager implements UserService {
 	public Result update(UpdateApplicationUserRequest updateApplicationUserRequest) {
 
 		ApplicationUser applicationUser = this.applicationUserDao.getById(updateApplicationUserRequest.getUserId());
-		applicationUser.setFirstName(updateApplicationUserRequest.getFirstName());
-		applicationUser.setLastName(updateApplicationUserRequest.getLastName());
 		applicationUser.setEmail(updateApplicationUserRequest.getEmail());
 		applicationUser.setPassword(updateApplicationUserRequest.getPassword());
 
@@ -71,6 +68,19 @@ public class UserManager implements UserService {
 
 		this.applicationUserDao.delete(applicationUser);
 		return new SuccessResult(Messages.UserDeleted);
+	}
+
+	@Override
+	public DataResult<ApplicationUser> getByEmail(String email) {
+		return new SuccessDataResult<ApplicationUser>(this.applicationUserDao.getByEmail(email));
+	}
+
+	@Override
+	public Result existsByEmail(String email) {
+		if (!this.applicationUserDao.existsByEmail(email)) {
+			return new ErrorResult();
+		}
+		return new SuccessResult();
 	}
 
 	

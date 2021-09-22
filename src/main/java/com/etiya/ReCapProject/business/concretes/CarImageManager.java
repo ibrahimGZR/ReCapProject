@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.etiya.ReCapProject.business.abstracts.CarImageService;
 import com.etiya.ReCapProject.business.abstracts.CarService;
+import com.etiya.ReCapProject.business.constants.FilePathConfiguration;
 import com.etiya.ReCapProject.business.constants.Messages;
-import com.etiya.ReCapProject.core.constants.FilePathConfiguration;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.ErrorDataResult;

@@ -1,7 +1,6 @@
 package com.etiya.ReCapProject.entities.requests;
 
-import java.util.Date;
-
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
@@ -13,19 +12,26 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRentalRequest {
-
-	@NotNull
-	private int rentalId;
+public class RegisterCorporateCustomerRequest {
 	
-	@NotNull
-	private int carId;
-	
-	@NotNull
 	@NotBlank
-	private Date rentDate;
-	
 	@NotNull
+	private String companyName;
+	
 	@NotBlank
-	private Date returnDate;
+	@NotNull
+	private String taxNumber;
+	
+	@NotBlank
+	@NotNull
+	@Email
+	private String email;
+	
+	@NotBlank
+	@NotNull
+	private String password;
+	
+	@NotBlank
+	@NotNull
+	private String passwordConfirm;
 }

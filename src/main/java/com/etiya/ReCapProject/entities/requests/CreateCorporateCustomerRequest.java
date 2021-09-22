@@ -1,8 +1,5 @@
 package com.etiya.ReCapProject.entities.requests;
 
-import java.util.Date;
-
-
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -12,17 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRentalRequest {
+public class CreateCorporateCustomerRequest {
 
 	@NotNull
-	private Date rentDate;
-	
+	private String companyName;
+
 	@NotNull
-	private Date returnDate;
-	
-	@NotNull
-	private int carId;
-	
+	private String taxNumber;
+
 	@NotNull
 	private int userId;
 }

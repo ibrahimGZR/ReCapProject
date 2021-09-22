@@ -15,6 +15,7 @@ import com.etiya.ReCapProject.business.abstracts.RentalService;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.Rental;
+import com.etiya.ReCapProject.entities.dtos.RentalDetailDto;
 import com.etiya.ReCapProject.entities.requests.CreateRentalRequest;
 import com.etiya.ReCapProject.entities.requests.DeleteRentalRequest;
 import com.etiya.ReCapProject.entities.requests.UpdateRentalRequest;
@@ -38,6 +39,11 @@ public class RentalsController {
 	@GetMapping("/getbyid")
 	public DataResult<Rental> getById(int rentalId) {
 		return this.rentalService.getById(rentalId);
+	}
+
+	@GetMapping("/getRentalDetailsByRentalId")
+	public DataResult<RentalDetailDto> getRentalDetailsByRentalId(int rentalId) {
+		return this.rentalService.getRentalDetailsByRentalId(rentalId);
 	}
 
 	@PostMapping("/add")

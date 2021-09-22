@@ -19,4 +19,8 @@ public interface UserService {
 	Result update(UpdateApplicationUserRequest updateApplicationUserRequest);
 
 	Result delete(DeleteApplicationUserRequest deleteApplicationUserRequest);
+	
+	DataResult<ApplicationUser> getByEmail(String email);
+	
+	Result existsByEmail(String email);
 }

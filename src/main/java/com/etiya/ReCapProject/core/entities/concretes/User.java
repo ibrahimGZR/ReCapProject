@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
+
+import com.sun.istack.NotNull;
 
 import lombok.Data;
 
@@ -16,15 +19,13 @@ public class User {
 	@Column(name = "user_id")
 	private int userId;
 
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
-
+	@NotBlank
+	@NotNull
 	@Column(name = "email")
 	private String email;
 
+	@NotBlank
+	@NotNull
 	@Column(name = "password")
 	private String password;
 }

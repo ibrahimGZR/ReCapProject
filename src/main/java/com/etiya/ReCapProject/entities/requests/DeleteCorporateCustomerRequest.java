@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCustomerRequest {
+public class DeleteCorporateCustomerRequest {
 
 	@NotNull
-	private int customerId;
+	private int corporateCustomerId;
 }

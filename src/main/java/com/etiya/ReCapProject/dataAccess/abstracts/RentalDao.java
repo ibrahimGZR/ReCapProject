@@ -8,4 +8,6 @@ import com.etiya.ReCapProject.entities.concretes.Rental;
 public interface RentalDao extends JpaRepository<Rental, Integer> {
 	
 	boolean existsByIsCarReturnedIsFalseAndCar_CarId(int carId);
+	
+	//RentalDetailDto getRentalById(int rentalId);
 }

@@ -9,12 +9,14 @@ import com.etiya.ReCapProject.business.abstracts.BrandService;
 import com.etiya.ReCapProject.business.abstracts.CarService;
 import com.etiya.ReCapProject.business.abstracts.ColorService;
 import com.etiya.ReCapProject.business.constants.Messages;
-import com.etiya.ReCapProject.core.utilities.results.*;
-import com.etiya.ReCapProject.dataAccess.abstracts.BrandDao;
+import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.Result;
+import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
+import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.CarDao;
-import com.etiya.ReCapProject.dataAccess.abstracts.ColorDao;
 import com.etiya.ReCapProject.entities.concretes.Brand;
 import com.etiya.ReCapProject.entities.concretes.Car;
+import com.etiya.ReCapProject.entities.concretes.CarImage;
 import com.etiya.ReCapProject.entities.concretes.Color;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
 import com.etiya.ReCapProject.entities.requests.CreateCarRequest;
@@ -23,7 +25,7 @@ import com.etiya.ReCapProject.entities.requests.UpdateCarRequest;
 
 @Service
 public class CarManager implements CarService {
-	
+
 	private CarDao carDao;
 	private ColorService colorService;
 	private BrandService brandService;
@@ -102,13 +104,26 @@ public class CarManager implements CarService {
 	@Override
 	public DataResult<List<CarDetailDto>> getAllCarsDetails() {
 
-		return new SuccessDataResult<List<CarDetailDto>>(this.carDao.getCarsWithBrandAndColorDetail(),
+		return new SuccessDataResult<List<CarDetailDto>>(null,
 				Messages.CarDetailsListed);
 	}
 
 	@Override
 	public DataResult<CarDetailDto> getCarDetailsByCarId(int carId) {
-		return new SuccessDataResult<CarDetailDto>(this.carDao.getCarWithBrandAndColorDetail(carId),
+		
+		
+		Car car = this.carDao.getById(carId);
+		List<CarImage> carImages = car.getCarImages();
+		
+		CarDetailDto carDetailDto = new CarDetailDto();
+		carDetailDto.setCarName(car.getCarName());
+		carDetailDto.setDailyPrice(car.getDailyPrice());
+		carDetailDto.setBrandName(car.getBrand().getBrandName());
+		carDetailDto.setColorName(car.getColor().getColorName());
+		
+		carDetailDto.setCarImages(carImages);
+		
+		return new SuccessDataResult<CarDetailDto>(carDetailDto,
 				Messages.CarDetailsListed);
 	}
 

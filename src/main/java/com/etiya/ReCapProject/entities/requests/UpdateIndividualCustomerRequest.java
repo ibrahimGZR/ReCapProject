@@ -9,12 +9,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCustomerRequest {
+public class UpdateIndividualCustomerRequest {
 
 	@NotNull
-	private int customerId;
+	private int individualCustomerId;
 	
-	private String companyName;
+	@NotNull
+	private String firstName;
+
+	@NotNull
+	private String lastName;
+	
+	@NotNull
+	private String nationalIdentityNumber;
 	
 	@NotNull
 	private int userId;
