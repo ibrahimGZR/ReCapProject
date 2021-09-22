@@ -5,12 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.etiya.ReCapProject.business.abstracts.CarService;
+import com.etiya.ReCapProject.business.abstracts.CustomerService;
 import com.etiya.ReCapProject.business.abstracts.RentalService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
-import com.etiya.ReCapProject.core.utilities.results.*;
-import com.etiya.ReCapProject.dataAccess.abstracts.CarDao;
-import com.etiya.ReCapProject.dataAccess.abstracts.CustomerDao;
+import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
+import com.etiya.ReCapProject.core.utilities.results.Result;
+import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
+import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.RentalDao;
 import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.concretes.Customer;
@@ -23,15 +27,15 @@ import com.etiya.ReCapProject.entities.requests.UpdateRentalRequest;
 public class RentalManager implements RentalService {
 
 	private RentalDao rentalDao;
-	private CarDao carDao;
-	private CustomerDao customerDao;
+	private CarService carService;
+	private CustomerService customerService;
 
 	@Autowired
-	public RentalManager(RentalDao rentalDao, CarDao carDao, CustomerDao customerDao) {
+	public RentalManager(RentalDao rentalDao, CarService carService, CustomerService customerService) {
 		super();
 		this.rentalDao = rentalDao;
-		this.carDao = carDao;
-		this.customerDao = customerDao;
+		this.carService = carService;
+		this.customerService = customerService;
 	}
 
 	@Override
@@ -52,9 +56,9 @@ public class RentalManager implements RentalService {
 			return result;
 		}
 
-		Car car = this.carDao.getById(createRentalRequest.getCarId());
+		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
 
-		Customer customer = this.customerDao.getById(createRentalRequest.getCustomerId());
+		Customer customer = this.customerService.getById(createRentalRequest.getCustomerId()).getData();
 
 		Rental rental = new Rental();
 		rental.setRentDate(createRentalRequest.getRentDate());

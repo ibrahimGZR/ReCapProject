@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.etiya.ReCapProject.business.abstracts.BrandService;
 import com.etiya.ReCapProject.business.abstracts.CarService;
+import com.etiya.ReCapProject.business.abstracts.ColorService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.dataAccess.abstracts.BrandDao;
@@ -23,15 +25,15 @@ import com.etiya.ReCapProject.entities.requests.UpdateCarRequest;
 public class CarManager implements CarService {
 	
 	private CarDao carDao;
-	private ColorDao colorDao;
-	private BrandDao brandDao;
+	private ColorService colorService;
+	private BrandService brandService;
 
 	@Autowired
-	public CarManager(CarDao carDao, ColorDao colorDao, BrandDao brandDao) {
+	public CarManager(CarDao carDao, ColorService colorService, BrandService brandService) {
 		super();
 		this.carDao = carDao;
-		this.colorDao = colorDao;
-		this.brandDao = brandDao;
+		this.colorService = colorService;
+		this.brandService = brandService;
 	}
 
 	@Override
@@ -49,9 +51,9 @@ public class CarManager implements CarService {
 	@Override
 	public Result add(CreateCarRequest createCarRequest) {
 
-		Brand brand = this.brandDao.getById(createCarRequest.getBrandId());
+		Brand brand = this.brandService.getById(createCarRequest.getBrandId()).getData();
 
-		Color color = this.colorDao.getById(createCarRequest.getColorId());
+		Color color = this.colorService.getById(createCarRequest.getColorId()).getData();
 
 		Car car = new Car();
 		car.setCarName(createCarRequest.getCarName());
@@ -70,9 +72,9 @@ public class CarManager implements CarService {
 	@Override
 	public Result update(UpdateCarRequest updateCarRequest) {
 
-		Brand brand = this.brandDao.getById(updateCarRequest.getBrandId());
+		Brand brand = this.brandService.getById(updateCarRequest.getBrandId()).getData();
 
-		Color color = this.colorDao.getById(updateCarRequest.getColorId());
+		Color color = this.colorService.getById(updateCarRequest.getColorId()).getData();
 
 		Car car = this.carDao.getById(updateCarRequest.getCarId());
 		car.setCarName(updateCarRequest.getCarName());

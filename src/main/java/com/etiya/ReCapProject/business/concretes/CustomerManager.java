@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CustomerService;
+import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
@@ -23,13 +24,13 @@ import com.etiya.ReCapProject.entities.requests.UpdateCustomerRequest;
 public class CustomerManager implements CustomerService {
 	
 	private CustomerDao customerDao;
-	private ApplicationUserDao applicationUserDao; 
+	private UserService userService; 
 	
 	@Autowired
-	public CustomerManager(CustomerDao customerDao, ApplicationUserDao applicationUserDao) {
+	public CustomerManager(CustomerDao customerDao, UserService userService) {
 		super();
 		this.customerDao = customerDao;
-		this.applicationUserDao = applicationUserDao;
+		this.userService = userService;
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class CustomerManager implements CustomerService {
 	@Override
 	public Result add(CreateCustomerRequest createCustomerRequest) {
 		
-		ApplicationUser applicationUser = this.applicationUserDao.getById(createCustomerRequest.getUserId());
+		ApplicationUser applicationUser = this.userService.getById(createCustomerRequest.getUserId()).getData();
 		
 		Customer customer = new Customer();
 		customer.setCompanyName(createCustomerRequest.getCompanyName());
@@ -60,7 +61,7 @@ public class CustomerManager implements CustomerService {
 	@Override
 	public Result update(UpdateCustomerRequest updateCustomerRequest) {
 		
-		ApplicationUser applicationUser = this.applicationUserDao.getById(updateCustomerRequest.getUserId());
+		ApplicationUser applicationUser = this.userService.getById(updateCustomerRequest.getUserId()).getData();
 		
 		Customer customer = this.customerDao.getById(updateCustomerRequest.getCustomerId());
 		customer.setCompanyName(updateCustomerRequest.getCompanyName());

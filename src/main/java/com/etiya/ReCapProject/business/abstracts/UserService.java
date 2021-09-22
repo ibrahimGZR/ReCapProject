@@ -11,6 +11,8 @@ import com.etiya.ReCapProject.entities.requests.UpdateApplicationUserRequest;
 
 public interface UserService {
 	DataResult<List<ApplicationUser>> getAll();
+	
+	DataResult<ApplicationUser> getById(int applicationUserId);
 
 	Result add(CreateApplicationUserRequest createApplicationUserRequest);
 

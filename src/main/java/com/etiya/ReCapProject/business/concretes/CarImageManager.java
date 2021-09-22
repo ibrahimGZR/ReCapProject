@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.etiya.ReCapProject.business.abstracts.CarImageService;
+import com.etiya.ReCapProject.business.abstracts.CarService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.constants.FilePathConfiguration;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
@@ -21,7 +22,6 @@ import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
-import com.etiya.ReCapProject.dataAccess.abstracts.CarDao;
 import com.etiya.ReCapProject.dataAccess.abstracts.CarImageDao;
 import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.concretes.CarImage;
@@ -33,13 +33,13 @@ import com.etiya.ReCapProject.entities.requests.UpdateCarImageRequest;
 public class CarImageManager implements CarImageService {
 
 	private CarImageDao carImageDao;
-	private CarDao carDao;
+	private CarService carService;
 
 	@Autowired
-	public CarImageManager(CarImageDao carImageDao, CarDao carDao) {
+	public CarImageManager(CarImageDao carImageDao, CarService carService) {
 		super();
 		this.carImageDao = carImageDao;
-		this.carDao = carDao;
+		this.carService = carService;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class CarImageManager implements CarImageService {
 
 		Date dateNow = new java.sql.Date(new java.util.Date().getTime());
 
-		Car car = this.carDao.getById(createCarImageRequest.getCarId());
+		Car car = this.carService.getById(createCarImageRequest.getCarId()).getData();
 
 		CarImage carImage = new CarImage();
 		carImage.setImagePath(this.createCarImagePathAndreturnCarImagePath(createCarImageRequest));

@@ -32,6 +32,11 @@ public class UserManager implements UserService {
 	public DataResult<List<ApplicationUser>> getAll() {
 		return new SuccessDataResult<List<ApplicationUser>>(this.applicationUserDao.findAll(), Messages.UsersListed);
 	}
+	
+	@Override
+	public DataResult<ApplicationUser> getById(int applicationUserId) {
+		return new SuccessDataResult<ApplicationUser>(this.applicationUserDao.getById(applicationUserId));
+	}
 
 	@Override
 	public Result add(CreateApplicationUserRequest createApplicationUserRequest) {
@@ -67,5 +72,7 @@ public class UserManager implements UserService {
 		this.applicationUserDao.delete(applicationUser);
 		return new SuccessResult(Messages.UserDeleted);
 	}
+
+	
 
 }
