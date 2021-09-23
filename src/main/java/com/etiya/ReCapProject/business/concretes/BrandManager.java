@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.BrandService;
 import com.etiya.ReCapProject.business.constants.Messages;
+import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
@@ -40,7 +42,12 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
+		var result = BusinessRules.run(this.checkBrandByBrandName(createBrandRequest.getBrandName()));
 
+		if (result != null) {
+			return result;
+		}
+		
 		Brand brand = new Brand();
 		brand.setBrandName(createBrandRequest.getBrandName());
 
@@ -51,7 +58,12 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
+		var result = BusinessRules.run(this.checkBrandByBrandName(updateBrandRequest.getBrandName()));
 
+		if (result != null) {
+			return result;
+		}
+		
 		Brand brand = this.brandDao.getById(updateBrandRequest.getBrandId());
 		brand.setBrandName(updateBrandRequest.getBrandName());
 
@@ -65,6 +77,13 @@ public class BrandManager implements BrandService {
 		
 		this.brandDao.delete(brand);
 		return new SuccessResult(Messages.BrandDeleted);
+	}
+	
+	private Result checkBrandByBrandName(String brandName) {
+		if (this.brandDao.existsByBrandName(brandName)) {
+			return new ErrorResult("Bu isimde marka bulunuyor");
+		}
+		return new SuccessResult();
 	}
 
 }

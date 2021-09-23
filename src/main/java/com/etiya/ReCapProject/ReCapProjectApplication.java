@@ -27,16 +27,15 @@ public class ReCapProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReCapProjectApplication.class, args);
-		
+
 	}
-	
+
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.etiya.ReCapProject")).build();
 	}
 
-	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exception) {
@@ -50,8 +49,5 @@ public class ReCapProjectApplication {
 		ErrorDataResult<Object> error = new ErrorDataResult<Object>(validationErrors, "Doğrulama hataları");
 		return error;
 	}
-	
-	
-	
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.ColorService;
 import com.etiya.ReCapProject.business.constants.Messages;
+import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.*;
 import com.etiya.ReCapProject.dataAccess.abstracts.ColorDao;
 import com.etiya.ReCapProject.entities.concretes.Color;
@@ -38,6 +39,12 @@ public class ColorManager implements ColorService {
 	@Override
 	public Result add(CreateColorRequest createColorRequest) {
 
+		var result = BusinessRules.run(this.checkColorByColorName(createColorRequest.getColorName()));
+
+		if (result != null) {
+			return result;
+		}
+		
 		Color color = new Color();
 		color.setColorName(createColorRequest.getColorName());
 
@@ -49,6 +56,12 @@ public class ColorManager implements ColorService {
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
 
+		var result = BusinessRules.run(this.checkColorByColorName(updateColorRequest.getColorName()));
+
+		if (result != null) {
+			return result;
+		}
+		
 		Color color = this.colorDao.getById(updateColorRequest.getColorId());
 		color.setColorName(updateColorRequest.getColorName());
 
@@ -63,5 +76,12 @@ public class ColorManager implements ColorService {
 
 		this.colorDao.delete(color);
 		return new SuccessResult(Messages.ColorDeleted);
+	}
+	
+	private Result checkColorByColorName(String colorName) {
+		if (this.colorDao.existsByColorName(colorName)) {
+			return new ErrorResult("Bu isimde renk bulunuyor");
+		}
+		return new SuccessResult();
 	}
 }
