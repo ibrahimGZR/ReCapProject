@@ -1,4 +1,4 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.delete;
 
 
 import com.sun.istack.NotNull;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteBrandRequest {
-	
+public class DeleteRentalRequest {
+
 	@NotNull
-	private int brandId;
+	private int rentalId;
 }

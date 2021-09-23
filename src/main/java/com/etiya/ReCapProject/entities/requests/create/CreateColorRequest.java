@@ -1,4 +1,6 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.create;
+
+import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
 
@@ -9,8 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteCarImageRequest {
+public class CreateColorRequest {
 	
 	@NotNull
-	private int carImageId;
+	@NotBlank
+	private String colorName;
 }

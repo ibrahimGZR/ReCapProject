@@ -1,5 +1,6 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.create;
 
+import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
 
@@ -10,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteApplicationUserRequest {
-	
+public class CreateBrandRequest {
 	
 	@NotNull
-	private int userId;
+	@NotBlank
+	private String brandName;
 }

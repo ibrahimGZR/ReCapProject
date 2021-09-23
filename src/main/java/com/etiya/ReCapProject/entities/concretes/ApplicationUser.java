@@ -34,4 +34,9 @@ public class ApplicationUser extends User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "applicationUser")
 	private List<Rental> rentals;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "applicationUser")
+	private List<CardInformation> cardInformations;
+	
 }

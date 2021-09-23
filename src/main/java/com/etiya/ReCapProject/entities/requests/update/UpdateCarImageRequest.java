@@ -1,7 +1,4 @@
-package com.etiya.ReCapProject.entities.requests;
-
-
-
+package com.etiya.ReCapProject.entities.requests.update;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,17 +14,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class CreateCarImageRequest {
-	
+public class UpdateCarImageRequest {
 	
 	@NotNull
-	private int carId;
+	private int carImageId;
 	
 	@NotNull
 	@NotBlank
 	@JsonIgnore
 	private MultipartFile file;
-	
-	
 }

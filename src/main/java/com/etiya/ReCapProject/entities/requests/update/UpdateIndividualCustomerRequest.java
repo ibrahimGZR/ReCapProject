@@ -1,4 +1,4 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.update;
 
 import com.sun.istack.NotNull;
 

@@ -1,8 +1,6 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.update;
 
 import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
 
@@ -22,10 +20,8 @@ public class UpdateRentalRequest {
 	private int carId;
 	
 	@NotNull
-	@NotBlank
 	private Date rentDate;
 	
 	@NotNull
-	@NotBlank
 	private Date returnDate;
 }

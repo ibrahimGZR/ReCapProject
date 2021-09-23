@@ -1,7 +1,5 @@
 package com.etiya.ReCapProject.entities.concretes;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,28 +19,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@Table(name = "rentals")
-public class Rental {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
+@Table(name = "cards_information")
+public class CardInformation {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "rental_id")
-	private int rentalId;
+	@Column(name = "card_information_id")
+	private int cardInformationId;
+	
+	@Column(name = "card_name")
+	private String cardName;
 
-	@Column(name = "rent_date")
-	private Date rentDate;
+	@Column(name = "card_number")
+	private String cardNumber;
+	
+	@Column(name = "expiration_date")
+	private String expirationDate;
+	
+	@Column(name ="cvv")
+	private String cvv;
 
-	@Column(name = "return_date")
-	private Date returnDate;
-
-	@Column(name = "is_car_returned", columnDefinition = "boolean default false")
-	private boolean isCarReturned;
-
-	@ManyToOne
-	@JoinColumn(name = "car_id")
-	private Car car;
-
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "user_id")
 	private ApplicationUser applicationUser;
 

@@ -1,4 +1,4 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.create;
 
 import com.sun.istack.NotNull;
 
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCorporateCustomerRequest {
-	@NotNull
-	private int corporateCustomerId;
+public class CreateCorporateCustomerRequest {
 
 	@NotNull
 	private String companyName;

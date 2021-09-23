@@ -1,6 +1,5 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.update;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
@@ -12,14 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateApplicationUserRequest {
-
-	@NotBlank
+public class UpdateBrandRequest {
+	
 	@NotNull
-	@Email
-	private String email;
-
-	@NotBlank
+	private int brandId;
+	
 	@NotNull
-	private String password;
+	@NotBlank
+	private String brandName;
 }

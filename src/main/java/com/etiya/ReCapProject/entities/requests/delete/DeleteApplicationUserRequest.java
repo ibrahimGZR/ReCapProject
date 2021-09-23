@@ -1,4 +1,5 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.delete;
+
 
 import com.sun.istack.NotNull;
 
@@ -9,14 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCorporateCustomerRequest {
-
-	@NotNull
-	private String companyName;
-
-	@NotNull
-	private String taxNumber;
-
+public class DeleteApplicationUserRequest {
+	
+	
 	@NotNull
 	private int userId;
 }

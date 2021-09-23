@@ -1,4 +1,4 @@
-package com.etiya.ReCapProject.entities.requests;
+package com.etiya.ReCapProject.entities.requests.create;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

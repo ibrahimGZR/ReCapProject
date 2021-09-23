@@ -6,9 +6,9 @@ import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.CorporateCustomer;
 import com.etiya.ReCapProject.entities.dtos.CorporateCustomerDetailDto;
-import com.etiya.ReCapProject.entities.requests.CreateCorporateCustomerRequest;
-import com.etiya.ReCapProject.entities.requests.DeleteCorporateCustomerRequest;
-import com.etiya.ReCapProject.entities.requests.UpdateCorporateCustomerRequest;
+import com.etiya.ReCapProject.entities.requests.create.CreateCorporateCustomerRequest;
+import com.etiya.ReCapProject.entities.requests.delete.DeleteCorporateCustomerRequest;
+import com.etiya.ReCapProject.entities.requests.update.UpdateCorporateCustomerRequest;
 
 public interface CorporateCustomerService {
 	DataResult<List<CorporateCustomer>> getAll();
@@ -22,6 +22,8 @@ public interface CorporateCustomerService {
 	Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest);
 	
 	Result existsByUserId(int applicationUserId);
+	
+	DataResult<CorporateCustomer> getByApplicationUser_UserId(int applicationUserId);
 	
 	DataResult<CorporateCustomerDetailDto> getCorporateCustomerDetailsById(int corporateCustomerId);
 }
