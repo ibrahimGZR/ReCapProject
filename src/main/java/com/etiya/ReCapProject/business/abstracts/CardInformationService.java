@@ -21,4 +21,6 @@ public interface CardInformationService {
 	Result update(UpdateCardInformationRequest updateCardInformationRequest);
 
 	Result delete(DeleteCardInformationRequest deleteCardInformationRequest);
+	
+	Result checkCardFormat(String cardNumber);
 }

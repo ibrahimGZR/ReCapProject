@@ -115,7 +115,9 @@ public class RentalManager implements RentalService {
 	public Result add(CreateRentalRequest createRentalRequest) {
 
 		var result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
-				checkCustomerFindeksScore(createRentalRequest.getUserId(), createRentalRequest.getCarId()));
+				checkCustomerFindeksScore(createRentalRequest.getUserId(), createRentalRequest.getCarId()),
+				this.cardInformationService
+						.checkCardFormat(createRentalRequest.getCardInformationDto().getCardNumber()));
 
 		if (result != null) {
 			return result;
@@ -195,7 +197,7 @@ public class RentalManager implements RentalService {
 			}
 
 		}
-		
+
 		if (this.corporateCustomerService.existsByUserId(applicationUserId).isSuccess()) {
 
 			CorporateCustomer corporateCustomer = this.corporateCustomerService
@@ -207,7 +209,7 @@ public class RentalManager implements RentalService {
 				return new ErrorResult("Findeks puanı yetersiz");
 			}
 		}
-		
+
 		return new SuccessResult();
 
 	}

@@ -1,13 +1,17 @@
 package com.etiya.ReCapProject.business.concretes;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CardInformationService;
 import com.etiya.ReCapProject.business.abstracts.UserService;
+import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
@@ -52,6 +56,13 @@ public class CardInformationManager implements CardInformationService {
 
 	@Override
 	public Result add(CreateCardInformationRequest createCardInformationRequest) {
+		
+		var result = BusinessRules.run(this.checkCardFormat(createCardInformationRequest.getCardNumber()));
+
+		if (result != null) {
+			return result;
+		}
+		
 		ApplicationUser applicationUser = this.userService.getById(createCardInformationRequest.getUserId()).getData();
 
 		CardInformation cardInformation = new CardInformation();
@@ -68,6 +79,12 @@ public class CardInformationManager implements CardInformationService {
 
 	@Override
 	public Result update(UpdateCardInformationRequest updateCardInformationRequest) {
+		
+		var result = BusinessRules.run(this.checkCardFormat(updateCardInformationRequest.getCardNumber()));
+
+		if (result != null) {
+			return result;
+		}
 
 		CardInformation cardInformation = this.cardInformationDao
 				.getById(updateCardInformationRequest.getCardInformationId());
@@ -87,6 +104,24 @@ public class CardInformationManager implements CardInformationService {
 
 		this.cardInformationDao.delete(cardInformation);
 		return new SuccessResult("Kart başarıyla silindi");
+	}
+
+	@Override
+	public Result checkCardFormat(String cardNumber) {
+
+		String regex = "^(?:(?<visa>4[0-9]{12}(?:[0-9]{3})?)|" + "(?<mastercard>5[1-5][0-9]{14})|"
+				+ "(?<discover>6(?:011|5[0-9]{2})[0-9]{12})|" + "(?<amex>3[47][0-9]{13})|"
+				+ "(?<diners>3(?:0[0-5]|[68][0-9])?[0-9]{11})|" + "(?<jcb>(?:2131|1800|35[0-9]{3})[0-9]{11}))$";
+
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(cardNumber);
+
+		if (!matcher.find()) {
+			return new ErrorResult("Kart bilgileri doğru değil");
+		}
+		
+		return new SuccessResult();
+		
 	}
 
 }
