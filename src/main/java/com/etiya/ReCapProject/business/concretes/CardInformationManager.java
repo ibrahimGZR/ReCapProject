@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CardInformationService;
 import com.etiya.ReCapProject.business.abstracts.UserService;
+import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
@@ -38,20 +39,20 @@ public class CardInformationManager implements CardInformationService {
 	@Override
 	public DataResult<List<CardInformation>> getAll() {
 		return new SuccessDataResult<List<CardInformation>>(this.cardInformationDao.findAll(),
-				"Kart bilgileri listelendi");
+				Messages.CardInformationsListed);
 	}
 
 	@Override
 	public DataResult<CardInformation> getById(int cardInformationId) {
 		return new SuccessDataResult<CardInformation>(this.cardInformationDao.getById(cardInformationId),
-				"Kart bilgisi listelendi");
+				Messages.CardInformationListed);
 	}
 
 	@Override
 	public DataResult<List<CardInformation>> getCardInformationsByApplicationUser_UserId(int applicationUserId) {
 		return new SuccessDataResult<List<CardInformation>>(
 				this.cardInformationDao.getCardInformationByApplicationUser_UserId(applicationUserId),
-				"Kullanıcının kart bilgileri listelendi");
+				Messages.CardInformationListedByUser);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class CardInformationManager implements CardInformationService {
 		cardInformation.setApplicationUser(applicationUser);
 
 		this.cardInformationDao.save(cardInformation);
-		return new SuccessResult("Kart başariyla eklendi.");
+		return new SuccessResult(Messages.CardInformationAdded);
 	}
 
 	@Override
@@ -103,7 +104,7 @@ public class CardInformationManager implements CardInformationService {
 				.getById(deleteCardInformationRequest.getCardInformationId());
 
 		this.cardInformationDao.delete(cardInformation);
-		return new SuccessResult("Kart başarıyla silindi");
+		return new SuccessResult(Messages.CardInformationUpdated);
 	}
 
 	@Override
@@ -117,7 +118,7 @@ public class CardInformationManager implements CardInformationService {
 		Matcher matcher = pattern.matcher(cardNumber);
 
 		if (!matcher.find()) {
-			return new ErrorResult("Kart bilgileri doğru değil");
+			return new ErrorResult(Messages.CardNumberTypeIsNotValid);
 		}
 		
 		return new SuccessResult();

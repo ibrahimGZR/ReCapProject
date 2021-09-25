@@ -106,7 +106,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		corporateCustomerDetailDto.setCompanyName(corporateCustomer.getCompanyName());
 
 		return new SuccessDataResult<CorporateCustomerDetailDto>(corporateCustomerDetailDto,
-				"kurumsal müşteri detayları");
+				Messages.CorporateCustomerDetail);
 	}
 	
 	@Override

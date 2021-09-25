@@ -109,7 +109,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		individualCustomerDetailDto.setLastName(individualCustomer.getLastName());
 
 		return new SuccessDataResult<IndividualCustomerDetailDto>(individualCustomerDetailDto,
-				"bireysel müşteri detayları");
+				Messages.IndividualCustomerDetail);
 	}
 
 	@Override

@@ -30,6 +30,12 @@ public class UpdateCarRequest {
 	
 	@Size(max = 100)
 	private String description;
+	
+	@NotNull
+	private int minFindeksScore;
+	
+	@NotNull
+	private boolean isListed;
 
 	@NotNull
 	private int brandId;

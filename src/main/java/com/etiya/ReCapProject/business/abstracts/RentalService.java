@@ -22,4 +22,6 @@ public interface RentalService {
 	Result update(UpdateRentalRequest updateRentalRequest);
 
 	Result delete(DeleteRentalRequest deleteRentalRequest);
+	
+	Result carAtRentalReturnedIsTrue(int rentalId);
 }

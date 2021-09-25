@@ -28,4 +28,10 @@ public interface CarService {
 	DataResult<List<Car>> getCarsByColorId(int colorId);
 	
 	DataResult<List<Car>> getCarsByBrandId(int brandId);
+	
+	Result checkCarIsInGallery(int carId);
+	
+	Result carListedIsTrue(int carId);
+	
+	Result carListedIsFalse(int carId);
 }

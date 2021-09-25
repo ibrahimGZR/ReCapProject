@@ -81,7 +81,7 @@ public class BrandManager implements BrandService {
 	
 	private Result checkBrandByBrandName(String brandName) {
 		if (this.brandDao.existsByBrandName(brandName)) {
-			return new ErrorResult("Bu isimde marka bulunuyor");
+			return new ErrorResult(Messages.BrandIsFount);
 		}
 		return new SuccessResult();
 	}

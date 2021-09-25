@@ -91,7 +91,7 @@ public class RentalManager implements RentalService {
 			rentalDetailDto.setCarDetailDto(carDetailDto);
 			rentalDetailDto.setCustomerDto(individualCustomerDetailDto);
 
-			return new SuccessDataResult<RentalDetailDto>(rentalDetailDto, "kiralama işlemi detayları bireysel");
+			return new SuccessDataResult<RentalDetailDto>(rentalDetailDto, Messages.RentalDetail);
 		}
 		if (this.corporateCustomerService.existsByUserId(rental.getApplicationUser().getUserId()).isSuccess()) {
 
@@ -105,7 +105,7 @@ public class RentalManager implements RentalService {
 			rentalDetailDto.setCarDetailDto(carDetailDto);
 			rentalDetailDto.setCustomerDto(corporateCustomerDetailDto);
 
-			return new SuccessDataResult<RentalDetailDto>(rentalDetailDto, "kiralama işlemi detayları kurumsal");
+			return new SuccessDataResult<RentalDetailDto>(rentalDetailDto, Messages.RentalDetail);
 		}
 
 		return new ErrorDataResult<RentalDetailDto>();
@@ -117,13 +117,15 @@ public class RentalManager implements RentalService {
 		var result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
 				checkCustomerFindeksScore(createRentalRequest.getUserId(), createRentalRequest.getCarId()),
 				this.cardInformationService
-						.checkCardFormat(createRentalRequest.getCardInformationDto().getCardNumber()));
+						.checkCardFormat(createRentalRequest.getCardInformationDto().getCardNumber()),
+				this.carService.checkCarIsInGallery(createRentalRequest.getCarId()));
 
 		if (result != null) {
 			return result;
 		}
 
 		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
+		this.carService.carListedIsFalse(car.getCarId());
 
 		ApplicationUser applicationUser = this.userService.getById(createRentalRequest.getUserId()).getData();
 
@@ -160,9 +162,14 @@ public class RentalManager implements RentalService {
 
 		Rental rental = this.rentalDao.getById(updateRentalRequest.getRentalId());
 		rental.setReturnDate(updateRentalRequest.getReturnDate());
-		rental.setRentalId(updateRentalRequest.getRentalId());
 
-		rental.setCar(car);
+		if (rental.getCar().getCarId() != car.getCarId()) {
+
+			this.carService.carListedIsTrue(rental.getCar().getCarId());
+
+			this.carService.carListedIsFalse(car.getCarId());
+			rental.setCar(car);
+		}
 
 		this.rentalDao.save(rental);
 		return new SuccessResult(Messages.RentalUpdated);
@@ -175,6 +182,19 @@ public class RentalManager implements RentalService {
 
 		this.rentalDao.delete(rental);
 		return new SuccessResult(Messages.RentalDeleted);
+	}
+
+	@Override
+	public Result carAtRentalReturnedIsTrue(int rentalId) {
+
+		Rental rental = this.rentalDao.getById(rentalId);
+		rental.setCarReturned(true);
+
+		this.carService.carListedIsTrue(rental.getCar().getCarId());
+
+		this.rentalDao.save(rental);
+
+		return new SuccessResult(Messages.RentalCarIsReturned);
 	}
 
 	private Result checkCarIsReturned(int carId) {
@@ -193,7 +213,7 @@ public class RentalManager implements RentalService {
 			if (this.carService.getById(carId).getData().getMinFindeksScore() > this.customerFindeksScoreService
 					.getIndivicualScore(individualCustomer.getNationalIdentityNumber())) {
 
-				return new ErrorResult("Findeks puanı yetersiz");
+				return new ErrorResult(Messages.FindeksScoreIsInsufficient);
 			}
 
 		}
@@ -206,7 +226,7 @@ public class RentalManager implements RentalService {
 			if (this.carService.getById(carId).getData().getMinFindeksScore() > this.customerFindeksScoreService
 					.getCorporateScore(corporateCustomer.getTaxNumber())) {
 
-				return new ErrorResult("Findeks puanı yetersiz");
+				return new ErrorResult(Messages.FindeksScoreIsInsufficient);
 			}
 		}
 
