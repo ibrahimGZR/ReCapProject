@@ -20,20 +20,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler","rentals"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "applicationUser" })
 @Table(name = "corporate_customers")
-public class CorporateCustomer{
+public class CorporateCustomer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "corporate_customer_id")
 	private int corporateCustomerId;
-	
+
 	@Column(name = "company_name")
 	private String companyName;
-	
+
 	@Column(name = "tax_number")
 	private String taxNumber;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private ApplicationUser applicationUser;

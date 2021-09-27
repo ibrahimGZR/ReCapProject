@@ -1,6 +1,7 @@
 package com.etiya.ReCapProject.entities.concretes;
 
-import javax.persistence.CascadeType;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,25 +21,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "applicationUser" })
-@Table(name = "individual_customers")
-public class IndividualCustomer {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
+@Table(name = "invoices")
+public class Invoice {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "individual_customer_id")
-	private int individualCustomerId;
+	@Column(name = "invoice_id")
+	private int invoiceId;
+	
+	@Column(name = "invoice_no")
+	private String invoiceNo;
 
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
-
-	@Column(name = "national_identity_number")
-	private String nationalIdentityNumber;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private ApplicationUser applicationUser;
-
+	@Column(name = "creation_date")
+	private Date creationDate;
+	
+	@OneToOne()
+	@JoinColumn(name = "rental_id")
+	private Rental rental;
+	
 }
