@@ -35,6 +35,9 @@ public class UpdateCarRequest {
 	private int minFindeksScore;
 	
 	@NotNull
+	private long kilometer;
+	
+	@NotNull
 	private boolean isListed;
 
 	@NotNull

@@ -31,6 +31,9 @@ public class CreateCarRequest {
 	
 	@NotNull
 	private int minFindeksScore;
+	
+	@NotNull
+	private long kilometer;
 
 	@NotNull
 	private int brandId;

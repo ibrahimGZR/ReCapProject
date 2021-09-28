@@ -70,6 +70,8 @@ public class CarManager implements CarService {
 		car.setDailyPrice(createCarRequest.getDailyPrice());
 		car.setModelYear(createCarRequest.getModelYear());
 		car.setDescription(createCarRequest.getDescription());
+		car.setMinFindeksScore(createCarRequest.getMinFindeksScore());
+		car.setKilometer(createCarRequest.getKilometer());
 
 		car.setBrand(brand);
 		car.setColor(color);
@@ -94,6 +96,8 @@ public class CarManager implements CarService {
 		car.setDailyPrice(updateCarRequest.getDailyPrice());
 		car.setModelYear(updateCarRequest.getModelYear());
 		car.setDescription(updateCarRequest.getDescription());
+		car.setMinFindeksScore(updateCarRequest.getMinFindeksScore());
+		car.setKilometer(updateCarRequest.getKilometer());
 
 		car.setBrand(brand);
 		car.setColor(color);

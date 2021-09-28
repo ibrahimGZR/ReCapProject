@@ -47,6 +47,9 @@ public class Car {
 	@Column(name = "min_findeks_score")
 	private int minFindeksScore;
 	
+	@Column(name = "kilometer")
+	private long kilometer;
+	
 	@Column(name = "is_listed" , columnDefinition = "boolean default true")
 	private boolean isListed;
 

@@ -36,6 +36,12 @@ public class Rental {
 	@Column(name = "return_date")
 	private Date returnDate;
 	
+	@Column(name = "rent_kilometer")
+	private long rentKilometer;
+
+	@Column(name = "return_kilometer")
+	private long returnKilometer;
+	
 	@Column(name = "is_car_returned", columnDefinition = "boolean default false")
 	private boolean isCarReturned;
 
