@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CityService;
+import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.ErrorResult;
@@ -31,12 +32,12 @@ public class CityManager implements CityService {
 
 	@Override
 	public DataResult<List<City>> getAll() {
-		return new SuccessDataResult<List<City>>(this.cityDao.findAll(), "Şehirler listelendi");
+		return new SuccessDataResult<List<City>>(this.cityDao.findAll(), Messages.CitiesListed);
 	}
 
 	@Override
 	public DataResult<City> getById(int cityId) {
-		return new SuccessDataResult<City>(this.cityDao.getById(cityId), "Şehir listelendi");
+		return new SuccessDataResult<City>(this.cityDao.getById(cityId), Messages.CityListed);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class CityManager implements CityService {
 		city.setCityName(createCityRequest.getCityName());
 
 		this.cityDao.save(city);
-		return new SuccessResult("Şehir eklendi");
+		return new SuccessResult(Messages.CityAdded);
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class CityManager implements CityService {
 		city.setCityName(updateCityRequest.getCityName());
 
 		this.cityDao.save(city);
-		return new SuccessResult("Şehir güncellendi");
+		return new SuccessResult(Messages.CityUpdated);
 	}
 
 	@Override
@@ -77,12 +78,12 @@ public class CityManager implements CityService {
 		City city = this.cityDao.getById(deleteCityRequest.getCityId());
 
 		this.cityDao.delete(city);
-		return new SuccessResult("Şehir silindi");
+		return new SuccessResult(Messages.CityDeleted);
 	}
 
 	private Result checkCityByCityName(String cityName) {
 		if (this.cityDao.existsByCityName(cityName)) {
-			return new ErrorResult("Bu şehir bulunmaktadır");
+			return new ErrorResult(Messages.CityIsFound);
 		}
 		return new SuccessResult();
 	}

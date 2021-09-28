@@ -88,7 +88,7 @@ public class CarManager implements CarService {
 		Brand brand = this.brandService.getById(updateCarRequest.getBrandId()).getData();
 
 		Color color = this.colorService.getById(updateCarRequest.getColorId()).getData();
-		
+
 		City city = this.cityService.getById(updateCarRequest.getCityId()).getData();
 
 		Car car = this.carDao.getById(updateCarRequest.getCarId());
@@ -198,7 +198,7 @@ public class CarManager implements CarService {
 
 	@Override
 	public DataResult<List<Car>> getCarsByCity_CityId(int cityId) {
-		return new SuccessDataResult<List<Car>>(this.carDao.getByCity_CityId(cityId), "Şehire göre arabalar listelendi");
+		return new SuccessDataResult<List<Car>>(this.carDao.getByCity_CityId(cityId), Messages.CarsListedByCity);
 	}
 
 }
