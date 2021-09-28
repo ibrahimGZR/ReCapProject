@@ -59,6 +59,11 @@ public class CarsController {
 		return this.carService.getCarsByBrandId(brandId);
 	}
 	
+	@GetMapping("/getcarsbycityid")
+	public DataResult<List<Car>> getCarsByCity_CityId(int cityId) {
+		return this.carService.getCarsByCity_CityId(cityId);
+	}
+	
 	@PostMapping("/add")
 	public Result add(@Valid @RequestBody CreateCarRequest createCarRequest) {
 		return this.carService.add(createCarRequest);

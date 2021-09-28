@@ -42,4 +42,7 @@ public class UpdateCarRequest {
 
 	@NotNull
 	private int colorId;
+	
+	@NotNull
+	private int cityId;
 }

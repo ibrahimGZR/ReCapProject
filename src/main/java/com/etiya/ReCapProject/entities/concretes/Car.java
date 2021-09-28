@@ -58,6 +58,10 @@ public class Car {
 	@JoinColumn(name = "color_id")
 	private Color color;
 	
+	@ManyToOne
+	@JoinColumn(name = "city_id")
+	private City city;
+	
 	@OneToMany(mappedBy = "car")
 	private List<CarImage> carImages;
 	

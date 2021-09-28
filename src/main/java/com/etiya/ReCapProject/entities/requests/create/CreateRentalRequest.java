@@ -29,6 +29,9 @@ public class CreateRentalRequest {
 	
 	@NotNull
 	private int userId;
+
+	@NotNull
+	private int returnCityId;
 	
 	@NotNull
 	@Valid

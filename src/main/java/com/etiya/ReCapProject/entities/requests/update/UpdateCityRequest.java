@@ -1,6 +1,6 @@
 package com.etiya.ReCapProject.entities.requests.update;
 
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
 
 import com.sun.istack.NotNull;
 
@@ -11,22 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRentalRequest {
+public class UpdateCityRequest {
 
 	@NotNull
-	private int rentalId;
-	
-	@NotNull
-	private int carId;
+	private int cityId;
 
 	@NotNull
-	private int returnCityId;
-	
-	@NotNull
-	private Date rentDate;
-	
-	@NotNull
-	private Date returnDate;
-	
-	
+	@NotBlank
+	private String cityName;
 }
