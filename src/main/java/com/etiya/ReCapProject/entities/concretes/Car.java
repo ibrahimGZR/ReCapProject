@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler","rentals"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "rentals" })
 @Table(name = "cars")
 public class Car {
 
@@ -43,15 +43,15 @@ public class Car {
 
 	@Column(name = "description")
 	private String description;
-	
+
 	@Column(name = "min_findeks_score")
 	private int minFindeksScore;
-	
+
 	@Column(name = "kilometer")
 	private long kilometer;
-	
-	@Column(name = "is_listed" , columnDefinition = "boolean default true")
-	private boolean isListed;
+
+	@Column(name = "is_listed")
+	private boolean isListed = true;
 
 	@ManyToOne
 	@JoinColumn(name = "brand_id")
@@ -60,22 +60,22 @@ public class Car {
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "city_id")
 	private City city;
-	
+
 	@OneToMany(mappedBy = "car")
 	private List<CarImage> carImages;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "car")
 	private List<Rental> rentals;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "car")
 	private List<CarMaintenance> carMaintenances;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "car")
 	private List<CarDamageInformation> carDamageInformations;

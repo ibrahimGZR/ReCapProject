@@ -23,6 +23,11 @@ public class CardInformationDto {
 	@NotNull
 	@Size(min = 16, max = 16)
 	private String cardNumber;
+	
+	@NotBlank
+	@NotNull
+	@Size(max = 25)
+	private String cardHolderName;
 
 	@NotBlank
 	@NotNull
