@@ -1,9 +1,6 @@
 package com.etiya.ReCapProject.business.concretes;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,32 +129,20 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
 
-		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
-		
-		ZoneId defaultZoneId = ZoneId.systemDefault();
-		Instant instant = createRentalRequest.getRentDate().toInstant();
-		LocalDate minDate = instant.atZone(defaultZoneId).toLocalDate();
-
-		ZoneId defaultZoneId1 = ZoneId.systemDefault();
-		Instant instant1 = createRentalRequest.getReturnDate().toInstant();
-		LocalDate maxDate = instant1.atZone(defaultZoneId1).toLocalDate();
-
-		Period totalRentDate = Period.between(minDate, maxDate);
-		double totalPrice = car.getDailyPrice() * totalRentDate.getDays();
-
 		var result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
 				checkCustomerFindeksScore(createRentalRequest.getUserId(), createRentalRequest.getCarId()),
 				this.cardInformationService
 						.checkCardFormat(createRentalRequest.getCardInformationDto().getCardNumber()),
-				this.carService.checkCarIsInGallery(createRentalRequest.getCarId()),
-				this.checkPaymentService(createRentalRequest.getCardInformationDto(), totalPrice));
+				this.carService.checkCarIsInGallery(createRentalRequest.getCarId()), this.checkPaymentService(
+						createRentalRequest.getCardInformationDto(), getRentalTotalPrice(createRentalRequest)));
 
 		if (result != null) {
 			return result;
 		}
 
+		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
 		this.carService.carListedIsFalse(car.getCarId());
-		
+
 		ApplicationUser applicationUser = this.userService.getById(createRentalRequest.getUserId()).getData();
 
 		City takeCity = car.getCity();
@@ -312,14 +297,14 @@ public class RentalManager implements RentalService {
 
 	private Result cardInformationSavedIfCardIsSavedIsTrue(CardInformationDto cardInformationDto, int UserId) {
 
-		CreateCardInformationRequest cardInformationRequest = new CreateCardInformationRequest();
-		cardInformationRequest.setCardName(cardInformationDto.getCardName());
-		cardInformationRequest.setCardNumber(cardInformationDto.getCardNumber());
-		cardInformationRequest.setExpirationDate(cardInformationDto.getExpirationDate());
-		cardInformationRequest.setCvv(cardInformationDto.getCvv());
-		cardInformationRequest.setUserId(UserId);
+		CreateCardInformationRequest createCardInformationRequest = new CreateCardInformationRequest();
+		createCardInformationRequest.setCardName(cardInformationDto.getCardName());
+		createCardInformationRequest.setCardNumber(cardInformationDto.getCardNumber());
+		createCardInformationRequest.setExpirationDate(cardInformationDto.getExpirationDate());
+		createCardInformationRequest.setCvv(cardInformationDto.getCvv());
+		createCardInformationRequest.setUserId(UserId);
 
-		return new SuccessResult(this.cardInformationService.add(cardInformationRequest).getMessage());
+		return new SuccessResult(this.cardInformationService.add(createCardInformationRequest).getMessage());
 	}
 
 	private Result checkPaymentService(CardInformationDto cardInformationDto, double price) {
@@ -336,6 +321,18 @@ public class RentalManager implements RentalService {
 		}
 
 		return new SuccessResult();
+	}
+
+	private double getRentalTotalPrice(CreateRentalRequest createRentalRequest) {
+
+		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
+
+		long totalRentalDay = ChronoUnit.DAYS.between(createRentalRequest.getRentDate().toInstant(),
+				createRentalRequest.getReturnDate().toInstant());
+
+		double totalPrice = car.getDailyPrice() * (int) totalRentalDay;
+
+		return totalPrice;
 	}
 
 }
