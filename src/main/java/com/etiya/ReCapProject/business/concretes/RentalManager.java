@@ -1,6 +1,7 @@
 package com.etiya.ReCapProject.business.concretes;
 
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.etiya.ReCapProject.business.abstracts.CityService;
 import com.etiya.ReCapProject.business.abstracts.CorporateCustomerService;
 import com.etiya.ReCapProject.business.abstracts.IndividualCustomerService;
 import com.etiya.ReCapProject.business.abstracts.InvoiceService;
+import com.etiya.ReCapProject.business.abstracts.RentalAdditionalService;
 import com.etiya.ReCapProject.business.abstracts.RentalService;
 import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
@@ -31,6 +33,7 @@ import com.etiya.ReCapProject.entities.concretes.City;
 import com.etiya.ReCapProject.entities.concretes.CorporateCustomer;
 import com.etiya.ReCapProject.entities.concretes.IndividualCustomer;
 import com.etiya.ReCapProject.entities.concretes.Rental;
+import com.etiya.ReCapProject.entities.concretes.RentalAdditional;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
 import com.etiya.ReCapProject.entities.dtos.CardInformationDto;
 import com.etiya.ReCapProject.entities.dtos.CorporateCustomerDetailDto;
@@ -57,12 +60,14 @@ public class RentalManager implements RentalService {
 	private InvoiceService invoiceService;
 	private CityService cityService;
 	private PaymentService paymentService;
+	private RentalAdditionalService rentalAdditionalService;
 
 	@Autowired
 	public RentalManager(RentalDao rentalDao, CarService carService, UserService userService,
 			IndividualCustomerService individualCustomerService, CorporateCustomerService corporateCustomerService,
 			CustomerFindeksScoreService customerFindeksScoreService, CardInformationService cardInformationService,
-			InvoiceService invoiceService, CityService cityService, PaymentService paymentService) {
+			InvoiceService invoiceService, CityService cityService, PaymentService paymentService,
+			RentalAdditionalService rentalAdditionalService) {
 		super();
 		this.rentalDao = rentalDao;
 		this.carService = carService;
@@ -74,6 +79,7 @@ public class RentalManager implements RentalService {
 		this.invoiceService = invoiceService;
 		this.cityService = cityService;
 		this.paymentService = paymentService;
+		this.rentalAdditionalService = rentalAdditionalService;
 	}
 
 	@Override
@@ -133,8 +139,9 @@ public class RentalManager implements RentalService {
 				checkCustomerFindeksScore(createRentalRequest.getUserId(), createRentalRequest.getCarId()),
 				this.cardInformationService
 						.checkCardFormat(createRentalRequest.getCardInformationDto().getCardNumber()),
-				this.carService.checkCarIsInGallery(createRentalRequest.getCarId()), this.checkPaymentService(
-						createRentalRequest.getCardInformationDto(), getRentalTotalPrice(createRentalRequest)));
+				this.carService.checkCarIsInGallery(createRentalRequest.getCarId()),
+				this.checkPaymentService(createRentalRequest.getCardInformationDto(),
+						getRentalTotalPrice(createRentalRequest).getData()));
 
 		if (result != null) {
 			return result;
@@ -158,6 +165,7 @@ public class RentalManager implements RentalService {
 		rental.setApplicationUser(applicationUser);
 		rental.setTakeCity(takeCity);
 		rental.setReturnCity(returnCity);
+		rental.setRentalAdditionals(createRentalRequest.getRentalAdditionals());
 
 		this.rentalDao.save(rental);
 
@@ -238,7 +246,7 @@ public class RentalManager implements RentalService {
 		this.rentalDao.save(rental);
 
 		CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest();
-		createInvoiceRequest.setRentalId(rental.getRentalId());
+		createInvoiceRequest.setRental(rental);
 
 		this.invoiceService.add(createInvoiceRequest);
 
@@ -323,21 +331,41 @@ public class RentalManager implements RentalService {
 		return new SuccessResult();
 	}
 
-	private double getRentalTotalPrice(CreateRentalRequest createRentalRequest) {
+	@Override
+	public DataResult<Double> getRentalAdditionalTotalPrice(int rentalAdditionalId, Date minDate, Date maxDate) {
 
-		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
+		long totalRentalDay = ChronoUnit.DAYS.between(minDate.toInstant(), maxDate.toInstant());
+
+		RentalAdditional rentalAdditional = this.rentalAdditionalService.getById(rentalAdditionalId).getData();
+		double rentalAdditionalTotalPrice = rentalAdditional.getDailyPrice() * totalRentalDay;
+
+		return new SuccessDataResult<Double>(rentalAdditionalTotalPrice);
+	}
+
+	private DataResult<Double> getRentalTotalPrice(CreateRentalRequest createRentalRequest) {
 
 		long totalRentalDay = ChronoUnit.DAYS.between(createRentalRequest.getRentDate().toInstant(),
 				createRentalRequest.getReturnDate().toInstant());
 
-		double totalPrice = car.getDailyPrice() * (int) totalRentalDay;
+		Car car = this.carService.getById(createRentalRequest.getCarId()).getData();
 
-		if (car.getCity().getCityId() != createRentalRequest.getReturnCityId()) {
-			
-			totalPrice += 500;
+		double totalPrice = car.getDailyPrice() * totalRentalDay;
+
+		List<RentalAdditional> rentalAdditionals = createRentalRequest.getRentalAdditionals();
+
+		for (RentalAdditional rentalAdditional : rentalAdditionals) {
+			totalPrice += this.getRentalAdditionalTotalPrice(rentalAdditional.getRentalAdditionalId(),
+					createRentalRequest.getRentDate(), createRentalRequest.getReturnDate()).getData();
 		}
 
-		return totalPrice;
+		if (car.getCity().getCityId() != createRentalRequest.getReturnCityId()) {
+
+			RentalAdditional rentalAdditional = this.rentalAdditionalService.getById(1).getData();
+			rentalAdditionals.add(rentalAdditional);
+			totalPrice += rentalAdditional.getDailyPrice();
+		}
+
+		return new SuccessDataResult<Double>(totalPrice);
 	}
 
 }

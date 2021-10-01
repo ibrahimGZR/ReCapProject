@@ -1,5 +1,6 @@
 package com.etiya.ReCapProject.business.abstracts;
 
+import java.util.Date;
 import java.util.List;
 
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
@@ -25,4 +26,6 @@ public interface RentalService {
 	Result delete(DeleteRentalRequest deleteRentalRequest);
 
 	Result carAtRentalReturnedIsTrue(CarReturnedRequest carReturnedRequest);
+	
+	DataResult<Double> getRentalAdditionalTotalPrice(int rentalAdditionalId, Date minDate, Date maxDate);
 }

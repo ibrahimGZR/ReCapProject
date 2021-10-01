@@ -21,7 +21,7 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateIndividualCustomerR
 @RestController
 @RequestMapping("api/individualcustomers")
 public class IndividualCustomersController {
-	IndividualCustomerService individualCustomerService;
+	private IndividualCustomerService individualCustomerService;
 
 	@Autowired
 	public IndividualCustomersController(IndividualCustomerService individualCustomerService) {

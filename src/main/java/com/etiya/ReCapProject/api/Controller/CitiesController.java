@@ -22,7 +22,7 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateCityRequest;
 @RestController
 @RequestMapping("api/cities")
 public class CitiesController {
-	CityService cityService;
+	private CityService cityService;
 
 	@Autowired
 	public CitiesController(CityService cityService) {

@@ -21,7 +21,7 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateCorporateCustomerRe
 @RestController
 @RequestMapping("api/corporateCustomers")
 public class CorporateCustomersController {
-	CorporateCustomerService corporateCustomerService;
+	private CorporateCustomerService corporateCustomerService;
 
 	@Autowired
 	public CorporateCustomersController(CorporateCustomerService corporateCustomerService) {

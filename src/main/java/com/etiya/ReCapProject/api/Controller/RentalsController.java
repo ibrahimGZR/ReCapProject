@@ -24,7 +24,7 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateRentalRequest;
 @RestController
 @RequestMapping("api/rentals")
 public class RentalsController {
-	RentalService rentalService;
+	private RentalService rentalService;
 
 	@Autowired
 	public RentalsController(RentalService rentalService) {

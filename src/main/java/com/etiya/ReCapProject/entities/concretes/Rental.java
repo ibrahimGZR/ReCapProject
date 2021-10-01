@@ -1,6 +1,7 @@
 package com.etiya.ReCapProject.entities.concretes;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -63,5 +66,11 @@ public class Rental {
 
 	@OneToOne(mappedBy = "rental")
 	private Invoice invoice;
+	
+	@ManyToMany()
+	@JoinTable(name = "rental_rental_additionals", 
+	joinColumns = @JoinColumn(name = "rental_id"), 
+	inverseJoinColumns = @JoinColumn(name = "rental_additional_id"))
+	private List<RentalAdditional> rentalAdditionals;
 
 }

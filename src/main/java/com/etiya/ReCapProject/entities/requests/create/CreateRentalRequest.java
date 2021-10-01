@@ -1,9 +1,11 @@
 package com.etiya.ReCapProject.entities.requests.create;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import com.etiya.ReCapProject.entities.concretes.RentalAdditional;
 import com.etiya.ReCapProject.entities.dtos.CardInformationDto;
 import com.sun.istack.NotNull;
 
@@ -32,6 +34,9 @@ public class CreateRentalRequest {
 
 	@NotNull
 	private int returnCityId;
+	
+	@NotNull
+	private List<RentalAdditional> rentalAdditionals;
 	
 	@NotNull
 	@Valid

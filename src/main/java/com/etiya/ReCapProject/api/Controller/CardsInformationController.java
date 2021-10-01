@@ -23,7 +23,7 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateCardInformationRequ
 @RequestMapping("api/cardsinformation")
 public class CardsInformationController {
 
-	CardInformationService cardInformationService;
+	private CardInformationService cardInformationService;
 
 	@Autowired
 	public CardsInformationController(CardInformationService cardInformationService) {

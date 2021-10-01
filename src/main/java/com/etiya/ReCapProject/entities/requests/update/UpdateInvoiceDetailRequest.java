@@ -1,6 +1,5 @@
-package com.etiya.ReCapProject.entities.requests.create;
+package com.etiya.ReCapProject.entities.requests.update;
 
-import com.etiya.ReCapProject.entities.concretes.Rental;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -10,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateInvoiceRequest {
+public class UpdateInvoiceDetailRequest {
 
 	@NotNull
-	private Rental rental;
-
+	private int invoiceDetailId;
 }

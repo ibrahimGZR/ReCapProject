@@ -1,6 +1,8 @@
 package com.etiya.ReCapProject.entities.requests.create;
 
-import com.etiya.ReCapProject.entities.concretes.Rental;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -10,9 +12,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateInvoiceRequest {
-
+public class CreateRentalAdditionalRequest {
+	
 	@NotNull
-	private Rental rental;
-
+	@NotBlank
+	private String rentalAdditionalName;
+	
+	@NotNull
+	@Min(0)
+	private double dailyPrice;
 }

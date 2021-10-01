@@ -1,6 +1,7 @@
 package com.etiya.ReCapProject.entities.concretes;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler","rental"})
 @Table(name = "invoices")
 public class Invoice {
 	
@@ -35,6 +37,9 @@ public class Invoice {
 
 	@Column(name = "creation_date")
 	private Date creationDate;
+	
+	@OneToMany(mappedBy = "invoice")
+	private List<InvoiceDetail> invoiceDetails;
 	
 	@OneToOne()
 	@JoinColumn(name = "rental_id")

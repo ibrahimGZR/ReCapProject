@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateInvoiceRequest {
+public class CreateInvoiceDetailRequest {
+
+	@NotNull
+	private int invoiceId;
 
 	@NotNull
 	private Rental rental;
-
 }

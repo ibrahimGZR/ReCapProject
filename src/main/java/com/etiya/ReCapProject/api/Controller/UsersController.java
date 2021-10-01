@@ -13,7 +13,7 @@ import com.etiya.ReCapProject.entities.concretes.ApplicationUser;
 @RestController
 @RequestMapping("api/users")
 public class UsersController {
-	UserService userService;
+	private UserService userService;
 
 	public UsersController(UserService userService) {
 		super();

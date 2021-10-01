@@ -23,7 +23,7 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateCarDamageInformatio
 @RequestMapping("api/cardamageinformations")
 public class CarDamageInformationsController {
 
-	CarDamageInformationService carDamageInformationService;
+	private CarDamageInformationService carDamageInformationService;
 
 	@Autowired
 	public CarDamageInformationsController(CarDamageInformationService carDamageInformationService) {
