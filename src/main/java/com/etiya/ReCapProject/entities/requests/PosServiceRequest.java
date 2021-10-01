@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FakePosServiceRequest {
+public class PosServiceRequest {
 
 	@NotBlank
 	@NotNull

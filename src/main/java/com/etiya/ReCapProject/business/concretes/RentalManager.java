@@ -37,7 +37,7 @@ import com.etiya.ReCapProject.entities.dtos.CorporateCustomerDetailDto;
 import com.etiya.ReCapProject.entities.dtos.IndividualCustomerDetailDto;
 import com.etiya.ReCapProject.entities.dtos.RentalDetailDto;
 import com.etiya.ReCapProject.entities.requests.CarReturnedRequest;
-import com.etiya.ReCapProject.entities.requests.FakePosServiceRequest;
+import com.etiya.ReCapProject.entities.requests.PosServiceRequest;
 import com.etiya.ReCapProject.entities.requests.create.CreateCardInformationRequest;
 import com.etiya.ReCapProject.entities.requests.create.CreateInvoiceRequest;
 import com.etiya.ReCapProject.entities.requests.create.CreateRentalRequest;
@@ -309,14 +309,14 @@ public class RentalManager implements RentalService {
 
 	private Result checkPaymentService(CardInformationDto cardInformationDto, double price) {
 
-		FakePosServiceRequest fakePosServiceRequest = new FakePosServiceRequest();
+		PosServiceRequest fakePosServiceRequest = new PosServiceRequest();
 		fakePosServiceRequest.setCardNumber(cardInformationDto.getCardName());
 		fakePosServiceRequest.setCardHolderName(cardInformationDto.getCardHolderName());
 		fakePosServiceRequest.setExpirationDate(cardInformationDto.getExpirationDate());
 		fakePosServiceRequest.setCvv(cardInformationDto.getCvv());
 		fakePosServiceRequest.setPrice(price);
 
-		if (!this.paymentService.pos(fakePosServiceRequest)) {
+		if (!this.paymentService.withdraw(fakePosServiceRequest)) {
 			return new ErrorResult("Ödeme işlemi başarısız");
 		}
 
@@ -331,6 +331,11 @@ public class RentalManager implements RentalService {
 				createRentalRequest.getReturnDate().toInstant());
 
 		double totalPrice = car.getDailyPrice() * (int) totalRentalDay;
+
+		if (car.getCity().getCityId() != createRentalRequest.getReturnCityId()) {
+			
+			totalPrice += 500;
+		}
 
 		return totalPrice;
 	}
