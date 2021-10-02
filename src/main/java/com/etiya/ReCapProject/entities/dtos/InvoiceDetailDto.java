@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.etiya.ReCapProject.entities.concretes.InvoiceDetail;
 import com.etiya.ReCapProject.entities.dtos.abstracts.CustomerDto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

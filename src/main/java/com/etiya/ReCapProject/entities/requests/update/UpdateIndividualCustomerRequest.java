@@ -13,16 +13,13 @@ public class UpdateIndividualCustomerRequest {
 
 	@NotNull
 	private int individualCustomerId;
-	
+
 	@NotNull
 	private String firstName;
 
 	@NotNull
 	private String lastName;
-	
+
 	@NotNull
 	private String nationalIdentityNumber;
-	
-	@NotNull
-	private int userId;
 }

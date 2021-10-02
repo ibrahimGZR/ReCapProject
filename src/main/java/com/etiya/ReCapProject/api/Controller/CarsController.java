@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.CarService;
-import com.etiya.ReCapProject.core.utilities.results.*;
+import com.etiya.ReCapProject.core.utilities.results.DataResult;
+import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.dtos.CarDetailDto;
 import com.etiya.ReCapProject.entities.requests.create.CreateCarRequest;
@@ -29,51 +30,52 @@ public class CarsController {
 		super();
 		this.carService = carService;
 	}
-	
+
 	@GetMapping("/getAll")
 	public DataResult<List<Car>> getAll() {
 		return this.carService.getAll();
 	}
-	
+
 	@GetMapping("/getbyid")
 	public DataResult<Car> getById(int carId) {
 		return this.carService.getById(carId);
 	}
-	
+
 	@GetMapping("/getcarsDetails")
 	public DataResult<List<CarDetailDto>> getCarsDetails() {
 		return this.carService.getAllCarsDetails();
 	}
+
 	@GetMapping("/getcarDetails")
-	DataResult<CarDetailDto> getCarDetailsByCarId(int carId){
+	DataResult<CarDetailDto> getCarDetailsByCarId(int carId) {
 		return this.carService.getCarDetailsByCarId(carId);
 	}
-	
+
 	@GetMapping("/getcarsbycolor")
-	public DataResult<List<Car>> getCarsByColorId(int colorId) {
+	public DataResult<List<CarDetailDto>> getCarsByColorId(int colorId) {
 		return this.carService.getCarsByColorId(colorId);
 	}
 
 	@GetMapping("/getcarsbybrand")
-	public DataResult<List<Car>> getCarsByBrandId(int brandId) {
+	public DataResult<List<CarDetailDto>> getCarsByBrandId(int brandId) {
 		return this.carService.getCarsByBrandId(brandId);
 	}
-	
+
 	@GetMapping("/getcarsbycityid")
-	public DataResult<List<Car>> getCarsByCity_CityId(int cityId) {
+	public DataResult<List<CarDetailDto>> getCarsByCity_CityId(int cityId) {
 		return this.carService.getCarsByCity_CityId(cityId);
 	}
-	
+
 	@PostMapping("/add")
 	public Result add(@Valid @RequestBody CreateCarRequest createCarRequest) {
 		return this.carService.add(createCarRequest);
 	}
-	
+
 	@PostMapping("/update")
 	public Result update(@Valid @RequestBody UpdateCarRequest updateCarRequest) {
 		return this.carService.update(updateCarRequest);
 	}
-	
+
 	@PostMapping("/delete")
 	public Result delete(DeleteCarRequest deleteCarRequest) {
 		return this.carService.delete(deleteCarRequest);

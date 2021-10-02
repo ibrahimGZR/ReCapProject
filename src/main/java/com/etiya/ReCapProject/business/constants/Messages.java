@@ -44,6 +44,7 @@ public class Messages {
 	public static String UserUpdated = "Kullanıcı güncellendi";
 	public static String UsersListed = "Kullanıcılar listelendi";
 	public static String UserListed = "Kullanıcı listelendi";
+	public static String EmailAlreadyExists = "Bu e-mail mevcut";
 
 	// Customer
 	public static String CustomerAdded = "Müşteri eklendi";
@@ -62,8 +63,18 @@ public class Messages {
 	public static String RentalListed = "Kiralama işlemi listelendi";
 	public static String RentalCarNotReturn = "Araç galeride değil. Kiralama işlemi başarısız";
 	public static String RentalDetail = "Kiralama işlemi detayları";
+	public static String RentalDetails = "Kiralama işlemlerinin detayları";
 	public static String RentalCarIsReturned = "Araç kiralanan müşteriden teslim alındı";
 	public static String FindeksScoreIsInsufficient = "Findeks puanı yetersiz";
+	public static String PaymentError = "Ödeme işlemi başarısız";
+
+	// RentalAdditional
+	public static String RentalAdditionalAdded = "Hizmet eklendi";
+	public static String RentalAdditionalDeleted = "Hizmet silindi";
+	public static String RentalAdditionalUpdated = "Hizmet güncellendi";
+	public static String RentalAdditionalsListed = "Hizmetler listelendi";
+	public static String RentalAdditionalListed = "Hizmet listelendi";
+	public static String RentalAdditionalIsFound = "Bu isimde hizmet mevcut";
 
 	// CarImage
 	public static String CarImageAdded = "Araba resmi eklendi";
@@ -126,4 +137,5 @@ public class Messages {
 	public static String CarDamageInformationsListed = "Araba hasar bilgileri listelendi";
 	public static String CarDamageInformationListed = "Araba hasar bilgisi listelendi";
 	public static String CarDamageInformationsListedByCar = "Araba ait hasar bilgileri listelendi";
+
 }
