@@ -130,6 +130,13 @@ public class Messages {
 	public static String InvoicesListedByCustomer = "Müşteri Faturaları listelendi";
 	public static String InvoicesListedByBetweenDate = "Faturalar tarih aralığına göre listelendi";
 
+	// InvoiceDetail
+	public static String InvoiceDetailAdded = "Fatura detayı eklendi";
+	public static String InvoiceDetailDeleted = "Fatura detayı silindi";
+	public static String InvoiceDetailUpdated = "Fatura detayı güncellendi";
+	public static String InvoiceDetailsListed = "Fatura detayları listelendi";
+	public static String InvoiceDetailListed = "Fatura detayı listelendi";
+
 	// CarDamageInformation
 	public static String CarDamageInformationAdded = "Araba hasar bilgisi eklendi";
 	public static String CarDamageInformationDeleted = "Araba hasar bilgisi silindi";
