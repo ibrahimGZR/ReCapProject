@@ -43,7 +43,7 @@
 
 ## Entity Relationship Diagram
 <p align="center">
-<img src="./Entity Relationship Diagram.png" width="1000"  />
+<img src="./Entity_Relationship_Diagram.png" width="1000"  />
 
 
 ## Requirements
