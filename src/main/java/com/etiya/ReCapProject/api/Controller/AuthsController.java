@@ -20,7 +20,7 @@ import com.etiya.ReCapProject.entities.requests.RegisterIndividualCustomerReques
 @RestController
 @RequestMapping("api/auths")
 public class AuthsController {
-	private AuthService authService;
+	private AuthService authService; 
 
 	@Autowired
 	public AuthsController(AuthService authService) {
