@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.CarMaintenanceService;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.CarMaintenance;
+import com.etiya.ReCapProject.entities.dtos.CarMaintenanceDetailDto;
 import com.etiya.ReCapProject.entities.requests.create.CreateCarMaintenanceRequest;
 import com.etiya.ReCapProject.entities.requests.delete.DeleteCarMaintenanceRequest;
 import com.etiya.ReCapProject.entities.requests.update.UpdateCarMaintenanceRequest;
@@ -36,14 +38,19 @@ public class CarMaintenancesController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<CarMaintenance> getById(int rentalId) {
-		return this.carMaintenanceService.getById(rentalId);
+	public DataResult<CarMaintenance> getById(@RequestParam("carMaintenanceId") int carMaintenanceId) {
+		return this.carMaintenanceService.getById(carMaintenanceId);
 	}
 
-//	@GetMapping("/getRentalDetailsByRentalId")
-//	public DataResult<RentalDetailDto> getRentalDetailsByRentalId(int rentalId) {
-//		return this.rentalService.getRentalDetailsByRentalId(rentalId);
-//	}
+	@GetMapping("/getCarMaintenancesDetail")
+	DataResult<List<CarMaintenanceDetailDto>> getCarMaintenancesDetail() {
+		return this.carMaintenanceService.getCarMaintenancesDetail();
+	}
+
+	@GetMapping("/getCarMaintenanceDetailById")
+	DataResult<CarMaintenanceDetailDto> getCarMaintenanceDetailById(int carMaintenanceId) {
+		return this.carMaintenanceService.getCarMaintenanceDetailById(carMaintenanceId);
+	}
 
 	@PostMapping("/add")
 	public Result add(@Valid @RequestBody CreateCarMaintenanceRequest createCarMaintenanceRequest) {
@@ -61,7 +68,7 @@ public class CarMaintenancesController {
 	}
 
 	@PostMapping("/carReturnedIsTrue")
-	public Result carReturnedIsTrue(int carMaintenanceId) {
+	public Result carReturnedIsTrue(@RequestParam("carMaintenanceId") int carMaintenanceId) {
 		return this.carMaintenanceService.CarAtMaintenanceReturnedIsTrue(carMaintenanceId);
 	}
 }

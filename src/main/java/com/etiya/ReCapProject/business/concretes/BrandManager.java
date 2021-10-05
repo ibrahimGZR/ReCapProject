@@ -1,7 +1,9 @@
 package com.etiya.ReCapProject.business.concretes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.BrandDao;
 import com.etiya.ReCapProject.entities.concretes.Brand;
+import com.etiya.ReCapProject.entities.dtos.BrandDetailDto;
 import com.etiya.ReCapProject.entities.requests.create.CreateBrandRequest;
 import com.etiya.ReCapProject.entities.requests.delete.DeleteBrandRequest;
 import com.etiya.ReCapProject.entities.requests.update.UpdateBrandRequest;
@@ -23,63 +26,91 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateBrandRequest;
 public class BrandManager implements BrandService {
 
 	private BrandDao brandDao;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	public BrandManager(BrandDao brandDao) {
+	public BrandManager(BrandDao brandDao, ModelMapper modelMapper) {
 		super();
 		this.brandDao = brandDao;
+		this.modelMapper = modelMapper;
 	}
 
 	@Override
 	public DataResult<List<Brand>> getAll() {
+
 		return new SuccessDataResult<List<Brand>>(this.brandDao.findAll(), Messages.BrandsListed);
 	}
 
 	@Override
 	public DataResult<Brand> getById(int brandId) {
+
 		return new SuccessDataResult<Brand>(this.brandDao.getById(brandId), Messages.BrandListed);
 	}
 
 	@Override
+	public DataResult<List<BrandDetailDto>> getBrandsDetail() {
+
+		List<Brand> brands = this.brandDao.findAll();
+
+		List<BrandDetailDto> brandDetailDtos = brands.stream()
+				.map(brand -> modelMapper.map(brand, BrandDetailDto.class)).collect(Collectors.toList());
+
+		return new SuccessDataResult<List<BrandDetailDto>>(brandDetailDtos, Messages.BrandsListed);
+	}
+
+	@Override
+	public DataResult<BrandDetailDto> getBrandDetailById(int brandId) {
+
+		Brand brand = this.brandDao.getById(brandId);
+
+		return new SuccessDataResult<BrandDetailDto>(modelMapper.map(brand, BrandDetailDto.class),
+				Messages.BrandListed);
+	}
+
+	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
+
 		var result = BusinessRules.run(this.checkBrandByBrandName(createBrandRequest.getBrandName()));
 
 		if (result != null) {
 			return result;
 		}
-		
-		Brand brand = new Brand();
-		brand.setBrandName(createBrandRequest.getBrandName());
+
+		Brand brand = modelMapper.map(createBrandRequest, Brand.class);
 
 		this.brandDao.save(brand);
-		return new SuccessResult(Messages.BrandAdded);
 
+		return new SuccessResult(Messages.BrandAdded);
 	}
 
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
+
 		var result = BusinessRules.run(this.checkBrandByBrandName(updateBrandRequest.getBrandName()));
 
 		if (result != null) {
 			return result;
 		}
-		
-		Brand brand = this.brandDao.getById(updateBrandRequest.getBrandId());
-		brand.setBrandName(updateBrandRequest.getBrandName());
+
+		Brand brand = modelMapper.map(updateBrandRequest, Brand.class);
 
 		this.brandDao.save(brand);
+
 		return new SuccessResult(Messages.BrandUpdated);
 	}
 
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
-		Brand brand = this.brandDao.getById(deleteBrandRequest.getBrandId());
-		
+
+		Brand brand = modelMapper.map(deleteBrandRequest, Brand.class);
+
 		this.brandDao.delete(brand);
+
 		return new SuccessResult(Messages.BrandDeleted);
 	}
-	
+
 	private Result checkBrandByBrandName(String brandName) {
+
 		if (this.brandDao.existsByBrandName(brandName)) {
 			return new ErrorResult(Messages.BrandIsFound);
 		}

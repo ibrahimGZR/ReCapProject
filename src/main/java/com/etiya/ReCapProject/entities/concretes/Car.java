@@ -2,6 +2,7 @@ package com.etiya.ReCapProject.entities.concretes;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -65,7 +66,7 @@ public class Car {
 	@JoinColumn(name = "city_id")
 	private City city;
 
-	@OneToMany(mappedBy = "car")
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
 	private List<CarImage> carImages;
 
 	@JsonIgnore
@@ -77,6 +78,6 @@ public class Car {
 	private List<CarMaintenance> carMaintenances;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "car")
+	@OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
 	private List<CarDamageInformation> carDamageInformations;
 }

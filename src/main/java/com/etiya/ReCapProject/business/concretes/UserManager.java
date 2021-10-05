@@ -2,6 +2,7 @@ package com.etiya.ReCapProject.business.concretes;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +24,24 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateApplicationUserRequ
 public class UserManager implements UserService {
 
 	private ApplicationUserDao applicationUserDao;
+	private ModelMapper modelMapper;
 
 	@Autowired
-	public UserManager(ApplicationUserDao applicationUserDao) {
+	public UserManager(ApplicationUserDao applicationUserDao, ModelMapper modelMapper) {
 		super();
 		this.applicationUserDao = applicationUserDao;
+		this.modelMapper = modelMapper;
 	}
 
 	@Override
 	public DataResult<List<ApplicationUser>> getAll() {
+
 		return new SuccessDataResult<List<ApplicationUser>>(this.applicationUserDao.findAll(), Messages.UsersListed);
 	}
 
 	@Override
 	public DataResult<ApplicationUser> getById(int applicationUserId) {
+
 		return new SuccessDataResult<ApplicationUser>(this.applicationUserDao.getById(applicationUserId));
 	}
 
@@ -49,11 +54,10 @@ public class UserManager implements UserService {
 			return result;
 		}
 
-		ApplicationUser applicationUser = new ApplicationUser();
-		applicationUser.setEmail(createApplicationUserRequest.getEmail());
-		applicationUser.setPassword(createApplicationUserRequest.getPassword());
+		ApplicationUser applicationUser = modelMapper.map(createApplicationUserRequest, ApplicationUser.class);
 
 		this.applicationUserDao.save(applicationUser);
+		
 		return new SuccessResult(Messages.UserAdded);
 	}
 
@@ -84,12 +88,14 @@ public class UserManager implements UserService {
 
 	@Override
 	public DataResult<ApplicationUser> getByEmail(String email) {
+
 		return new SuccessDataResult<ApplicationUser>(this.applicationUserDao.getByEmail(email));
 	}
 
 	@Override
 	public Result existsByEmail(String email) {
-		if (!this.applicationUserDao.existsByEmail(email)) {
+
+		if (this.applicationUserDao.existsByEmail(email)) {
 			return new ErrorResult(Messages.EmailAlreadyExists);
 		}
 		return new SuccessResult();

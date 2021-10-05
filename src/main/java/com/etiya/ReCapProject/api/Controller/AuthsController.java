@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.AuthService;
+import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
+import com.etiya.ReCapProject.entities.dtos.abstracts.CustomerDto;
 import com.etiya.ReCapProject.entities.requests.LoginRequest;
 import com.etiya.ReCapProject.entities.requests.RegisterCorporateCustomerRequest;
 import com.etiya.ReCapProject.entities.requests.RegisterIndividualCustomerRequest;
@@ -24,20 +27,27 @@ public class AuthsController {
 		super();
 		this.authService = authService;
 	}
-	
+
 	@PostMapping("/individualCustomerRegister")
-	Result individualCustomerRegister(@Valid @RequestBody RegisterIndividualCustomerRequest registerIndividualCustomerRequest) {
+	Result individualCustomerRegister(
+			@Valid @RequestBody RegisterIndividualCustomerRequest registerIndividualCustomerRequest) {
 		return this.authService.individualCustomerRegister(registerIndividualCustomerRequest);
 	}
-	
+
 	@PostMapping("/corporateCustomerRegister")
-	Result corporateCustomerRegister(@Valid @RequestBody RegisterCorporateCustomerRequest registerCorporateCustomerRequest) {
+	Result corporateCustomerRegister(
+			@Valid @RequestBody RegisterCorporateCustomerRequest registerCorporateCustomerRequest) {
 		return this.authService.corporateCustomerRegister(registerCorporateCustomerRequest);
 	}
-	
+
 	@PostMapping("/login")
 	Result login(@Valid @RequestBody LoginRequest loginRequest) {
 		return this.authService.login(loginRequest);
 	}
-	
+
+	@PostMapping("/returnLoginedCustomerDto")
+	DataResult<CustomerDto> returnLoginedCustomerDto(@RequestParam("email") String email) {
+		return this.authService.returnLoginedCustomerDto(email);
+	}
+
 }

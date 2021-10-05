@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.RentalService;
@@ -38,17 +39,18 @@ public class RentalsController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<Rental> getById(int rentalId) {
+	public DataResult<Rental> getById(@RequestParam("rentalId") int rentalId) {
 		return this.rentalService.getById(rentalId);
 	}
 
 	@GetMapping("/getRentalDetailsByRentalId")
-	public DataResult<RentalDetailDto> getRentalDetailsByRentalId(int rentalId) {
+	public DataResult<RentalDetailDto> getRentalDetailsByRentalId(@RequestParam("rentalId") int rentalId) {
 		return this.rentalService.getRentalDetailsByRentalId(rentalId);
 	}
 
 	@GetMapping("/getRentalsDetailByApplicationUserId")
-	DataResult<List<RentalDetailDto>> getRentalsDetailByApplicationUserId(int applicationUserId) {
+	DataResult<List<RentalDetailDto>> getRentalsDetailByApplicationUserId(
+			@RequestParam("applicationUserId") int applicationUserId) {
 		return this.rentalService.getRentalsDetailByApplicationUserId(applicationUserId);
 	}
 

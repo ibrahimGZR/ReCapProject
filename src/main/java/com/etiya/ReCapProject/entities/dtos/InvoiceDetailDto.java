@@ -29,8 +29,6 @@ public class InvoiceDetailDto {
 
 	private String colorName;
 
-	private double dailyPrice;
-
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date rentDate;
 

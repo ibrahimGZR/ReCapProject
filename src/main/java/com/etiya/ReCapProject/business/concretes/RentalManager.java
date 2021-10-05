@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.etiya.ReCapProject.business.abstracts.CarService;
 import com.etiya.ReCapProject.business.abstracts.CardInformationService;
@@ -83,11 +84,13 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public DataResult<List<Rental>> getAll() {
+
 		return new SuccessDataResult<List<Rental>>(this.rentalDao.findAll(), Messages.RentalsListed);
 	}
 
 	@Override
 	public DataResult<Rental> getById(int rentalId) {
+
 		return new SuccessDataResult<Rental>(this.rentalDao.getById(rentalId), Messages.RentalListed);
 	}
 
@@ -164,6 +167,7 @@ public class RentalManager implements RentalService {
 	}
 
 	@Override
+	@Transactional
 	public Result add(CreateRentalRequest createRentalRequest) {
 
 		var result = BusinessRules.run(checkCarIsReturned(createRentalRequest.getCarId()),
@@ -211,6 +215,7 @@ public class RentalManager implements RentalService {
 
 		this.rentalDao.save(rental);
 
+		// shouldCardBeSaved
 		if (createRentalRequest.isCardIsSaved()) {
 			this.cardInformationSavedIfCardIsSavedIsTrue(createRentalRequest.getCardInformationDto(),
 					createRentalRequest.getUserId());
@@ -310,6 +315,7 @@ public class RentalManager implements RentalService {
 
 	// Arabanın galeride olup olmadığını kontrol eder
 	private Result checkCarIsReturned(int carId) {
+
 		if (this.rentalDao.existsByIsCarReturnedIsFalseAndCar_CarId(carId)) {
 			return new ErrorResult(Messages.RentalCarNotReturn);
 		}
@@ -358,7 +364,6 @@ public class RentalManager implements RentalService {
 		}
 
 		return new SuccessResult();
-
 	}
 
 	// Müşteri kiralama sırasında kart bilgilerini kaydetmek isterse kart

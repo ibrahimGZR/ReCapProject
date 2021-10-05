@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.CardInformationService;
@@ -38,13 +39,13 @@ public class CardsInformationController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<CardInformation> getById(int carInformationId) {
+	public DataResult<CardInformation> getById(@RequestParam("carInformationId") int carInformationId) {
 		return this.cardInformationService.getById(carInformationId);
 	}
 
-	@GetMapping("/getCardInformationsByApplicationUser_UserId")
-	DataResult<List<CardInformationDto>> getCardInformationsByApplicationUser_UserId(int applicationUserId) {
-		return this.cardInformationService.getCardInformationsByApplicationUser_UserId(applicationUserId);
+	@GetMapping("/getCardsInformationByUserId")
+	DataResult<List<CardInformationDto>> getCardsInformationByApplicationUser_UserId(int applicationUserId) {
+		return this.cardInformationService.getCardsInformationByApplicationUser_UserId(applicationUserId);
 	}
 
 	@PostMapping("/add")

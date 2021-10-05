@@ -15,6 +15,7 @@ import com.etiya.ReCapProject.business.abstracts.CarImageService;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.CarImage;
+import com.etiya.ReCapProject.entities.dtos.CarImageDetailDto;
 import com.etiya.ReCapProject.entities.requests.create.CreateCarImageRequest;
 import com.etiya.ReCapProject.entities.requests.delete.DeleteCarImageRequest;
 import com.etiya.ReCapProject.entities.requests.update.UpdateCarImageRequest;
@@ -35,9 +36,24 @@ public class CarImagesController {
 		return this.carImageService.getAll();
 	}
 
-	@GetMapping("/getbycarid")
-	public DataResult<List<CarImage>> getByCar_CarId(int carId) {
-		return this.carImageService.getCarImagesByCarId(carId);
+	@GetMapping("/getById")
+	DataResult<CarImage> getById(int carImageId) {
+		return this.carImageService.getById(carImageId);
+	}
+
+	@GetMapping("/getCarImagesDetail")
+	public DataResult<List<CarImageDetailDto>> getCarImagesDetail() {
+		return this.carImageService.getCarImagesDetail();
+	}
+
+	@GetMapping("/getCarImageDetailByCarId")
+	public DataResult<List<CarImageDetailDto>> getCarImageDetailByCarId(int carId) {
+		return this.carImageService.getCarImageDetailByCarId(carId);
+	}
+
+	@GetMapping("/getCarImageDetailById")
+	public DataResult<CarImageDetailDto> getCarImageDetailById(int carImageId) {
+		return this.carImageService.getCarImageDetailById(carImageId);
 	}
 
 	@PostMapping("/add")
@@ -51,7 +67,7 @@ public class CarImagesController {
 	}
 
 	@PostMapping("/update")
-	public Result update(@RequestParam("carImageId") int carImageId, @RequestParam("file")  MultipartFile file)
+	public Result update(@RequestParam("carImageId") int carImageId, @RequestParam("file") MultipartFile file)
 			throws IOException {
 
 		UpdateCarImageRequest updateCarImageRequest = new UpdateCarImageRequest();

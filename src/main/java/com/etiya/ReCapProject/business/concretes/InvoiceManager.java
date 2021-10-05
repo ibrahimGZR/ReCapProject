@@ -60,6 +60,7 @@ public class InvoiceManager implements InvoiceService {
 
 	@Override
 	public DataResult<InvoiceDetailDto> getInvoiceDetailByRentalId(int rentalId) {
+
 		Invoice invoice = this.invoiceDao.getByRental_RentalId(rentalId);
 
 		InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
@@ -76,7 +77,6 @@ public class InvoiceManager implements InvoiceService {
 		invoiceDetailDto.setCarName(car.getCarName());
 		invoiceDetailDto.setBrandName(car.getBrand().getBrandName());
 		invoiceDetailDto.setColorName(car.getColor().getColorName());
-		invoiceDetailDto.setDailyPrice(car.getDailyPrice());
 
 		List<InvoiceDetail> invoiceDetail = invoice.getInvoiceDetails();
 		invoiceDetailDto.setInvoiceDetails(invoiceDetail);
@@ -84,7 +84,7 @@ public class InvoiceManager implements InvoiceService {
 		invoiceDetailDto.setTotalPrice(
 				this.invoiceDetailService.getSumtotalPriceByInvoice_InvoiceId(invoice.getInvoiceId()).getData());
 
-		return new SuccessDataResult<InvoiceDetailDto>(invoiceDetailDto, "Kirama işleminin fatura detayı");
+		return new SuccessDataResult<InvoiceDetailDto>(invoiceDetailDto, Messages.InvoiceDetailsByRentalId);
 	}
 
 	@Override
@@ -111,7 +111,6 @@ public class InvoiceManager implements InvoiceService {
 			invoiceDetailDto.setCarName(car.getCarName());
 			invoiceDetailDto.setBrandName(car.getBrand().getBrandName());
 			invoiceDetailDto.setColorName(car.getColor().getColorName());
-			invoiceDetailDto.setDailyPrice(car.getDailyPrice());
 
 			List<InvoiceDetail> invoiceDetail = invoice.getInvoiceDetails();
 			invoiceDetailDto.setInvoiceDetails(invoiceDetail);
@@ -173,6 +172,7 @@ public class InvoiceManager implements InvoiceService {
 
 	@Override
 	public DataResult<List<Invoice>> getByCreationDateBetween(InvoiceBetweenDateRequest invoiceBetweenDateRequest) {
+
 		return new SuccessDataResult<List<Invoice>>(
 				this.invoiceDao.getByCreationDateBetween(invoiceBetweenDateRequest.getMinDate(),
 						invoiceBetweenDateRequest.getMaxDate()),
@@ -181,6 +181,7 @@ public class InvoiceManager implements InvoiceService {
 
 	// Kiralama işlemine ait faturanın olup olmadığının kontrolünü yapar
 	private Result checkInvoiceByRentalId(int rentalId) {
+
 		if (this.invoiceDao.existsByRental_RentalId(rentalId)) {
 			return new ErrorResult(Messages.InvoiceIsNotFoundByRental);
 		}
