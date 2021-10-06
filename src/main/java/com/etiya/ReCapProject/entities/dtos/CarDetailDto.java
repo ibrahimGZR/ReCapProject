@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class CarDetailDto {
 	private String carName;
 
-	private BrandDetailDto brandDetailDto;
+	private String brandName;
 
-	private ColorDetailDto colorDetailDto;
+	private String colorName;
 
-	private CityDetailDto cityDetailDto;
+	private String cityName;
 
 	private long kilometer;
 
@@ -26,6 +26,6 @@ public class CarDetailDto {
 
 	private double dailyPrice;
 
-	private List<CarImageDetailDto> carImageDetailDtos;
+	private List<CarImageDetailDto> carcarImageDetailDtos;
 
 }

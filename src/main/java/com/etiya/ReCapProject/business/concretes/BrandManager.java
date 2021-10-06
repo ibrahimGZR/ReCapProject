@@ -3,11 +3,11 @@ package com.etiya.ReCapProject.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.BrandService;
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
@@ -26,13 +26,13 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateBrandRequest;
 public class BrandManager implements BrandService {
 
 	private BrandDao brandDao;
-	private ModelMapper modelMapper;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public BrandManager(BrandDao brandDao, ModelMapper modelMapper) {
+	public BrandManager(BrandDao brandDao, ModelMapperService modelMapperService) {
 		super();
 		this.brandDao = brandDao;
-		this.modelMapper = modelMapper;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -53,7 +53,8 @@ public class BrandManager implements BrandService {
 		List<Brand> brands = this.brandDao.findAll();
 
 		List<BrandDetailDto> brandDetailDtos = brands.stream()
-				.map(brand -> modelMapper.map(brand, BrandDetailDto.class)).collect(Collectors.toList());
+				.map(brand -> modelMapperService.forDto().map(brand, BrandDetailDto.class))
+				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<BrandDetailDto>>(brandDetailDtos, Messages.BrandsListed);
 	}
@@ -63,7 +64,7 @@ public class BrandManager implements BrandService {
 
 		Brand brand = this.brandDao.getById(brandId);
 
-		return new SuccessDataResult<BrandDetailDto>(modelMapper.map(brand, BrandDetailDto.class),
+		return new SuccessDataResult<BrandDetailDto>(modelMapperService.forDto().map(brand, BrandDetailDto.class),
 				Messages.BrandListed);
 	}
 
@@ -76,7 +77,7 @@ public class BrandManager implements BrandService {
 			return result;
 		}
 
-		Brand brand = modelMapper.map(createBrandRequest, Brand.class);
+		Brand brand = modelMapperService.forRequest().map(createBrandRequest, Brand.class);
 
 		this.brandDao.save(brand);
 
@@ -92,7 +93,8 @@ public class BrandManager implements BrandService {
 			return result;
 		}
 
-		Brand brand = modelMapper.map(updateBrandRequest, Brand.class);
+		Brand brand = this.brandDao.getById(updateBrandRequest.getBrandId());
+		brand.setBrandName(updateBrandRequest.getBrandName());
 
 		this.brandDao.save(brand);
 
@@ -102,7 +104,7 @@ public class BrandManager implements BrandService {
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
 
-		Brand brand = modelMapper.map(deleteBrandRequest, Brand.class);
+		Brand brand = this.brandDao.getById(deleteBrandRequest.getBrandId());
 
 		this.brandDao.delete(brand);
 

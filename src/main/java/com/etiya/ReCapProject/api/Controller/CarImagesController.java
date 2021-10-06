@@ -3,9 +3,13 @@ package com.etiya.ReCapProject.api.Controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,15 +35,15 @@ public class CarImagesController {
 		this.carImageService = carImageService;
 	}
 
-	@GetMapping("/getAll")
-	public DataResult<List<CarImage>> getAll() {
-		return this.carImageService.getAll();
-	}
-
-	@GetMapping("/getById")
-	DataResult<CarImage> getById(int carImageId) {
-		return this.carImageService.getById(carImageId);
-	}
+//	@GetMapping("/getAll")
+//	public DataResult<List<CarImage>> getAll() {
+//		return this.carImageService.getAll();
+//	}
+//
+//	@GetMapping("/getById")
+//	DataResult<CarImage> getById(int carImageId) {
+//		return this.carImageService.getById(carImageId);
+//	}
 
 	@GetMapping("/getCarImagesDetail")
 	public DataResult<List<CarImageDetailDto>> getCarImagesDetail() {
@@ -66,7 +70,7 @@ public class CarImagesController {
 		return this.carImageService.add(createCarImageRequest);
 	}
 
-	@PostMapping("/update")
+	@PutMapping("/update")
 	public Result update(@RequestParam("carImageId") int carImageId, @RequestParam("file") MultipartFile file)
 			throws IOException {
 
@@ -77,8 +81,8 @@ public class CarImagesController {
 		return this.carImageService.update(updateCarImageRequest);
 	}
 
-	@PostMapping("/delete")
-	public Result delete(DeleteCarImageRequest deleteCarImageRequest) {
+	@DeleteMapping("/delete")
+	public Result delete(@Valid DeleteCarImageRequest deleteCarImageRequest) {
 		return this.carImageService.delete(deleteCarImageRequest);
 	}
 }

@@ -1,10 +1,12 @@
 package com.etiya.ReCapProject.business.concretes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.abstracts.RentalAdditionalService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
@@ -15,6 +17,7 @@ import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.RentalAdditionalDao;
 import com.etiya.ReCapProject.entities.concretes.RentalAdditional;
+import com.etiya.ReCapProject.entities.dtos.RentalAdditionalDetailDto;
 import com.etiya.ReCapProject.entities.requests.create.CreateRentalAdditionalRequest;
 import com.etiya.ReCapProject.entities.requests.delete.DeleteRentalAdditionalRequest;
 import com.etiya.ReCapProject.entities.requests.update.UpdateRentalAdditionalRequest;
@@ -23,11 +26,13 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateRentalAdditionalReq
 public class RentalAdditionalManager implements RentalAdditionalService {
 
 	private RentalAdditionalDao rentalAdditionalDao;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public RentalAdditionalManager(RentalAdditionalDao rentalAdditionalDao) {
+	public RentalAdditionalManager(RentalAdditionalDao rentalAdditionalDao, ModelMapperService modelMapperService) {
 		super();
 		this.rentalAdditionalDao = rentalAdditionalDao;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -45,6 +50,31 @@ public class RentalAdditionalManager implements RentalAdditionalService {
 	}
 
 	@Override
+	public DataResult<List<RentalAdditionalDetailDto>> getRentalAdditionalDetails() {
+
+		List<RentalAdditional> rentalAdditionals = this.rentalAdditionalDao.findAll();
+
+		List<RentalAdditionalDetailDto> additionalDetailDtos = rentalAdditionals.stream().map(
+				rentalAdditional -> modelMapperService.forDto().map(rentalAdditional, RentalAdditionalDetailDto.class))
+				.collect(Collectors.toList());
+
+		return new SuccessDataResult<List<RentalAdditionalDetailDto>>(additionalDetailDtos,
+				Messages.RentalAdditionalsListed);
+	}
+
+	@Override
+	public DataResult<RentalAdditionalDetailDto> getRentalAdditionalDetailsById(int rentalAdditionalId) {
+
+		RentalAdditional rentalAdditional = this.rentalAdditionalDao.getById(rentalAdditionalId);
+
+		RentalAdditionalDetailDto rentalAdditionalDetailDto = modelMapperService.forDto().map(rentalAdditional,
+				RentalAdditionalDetailDto.class);
+
+		return new SuccessDataResult<RentalAdditionalDetailDto>(rentalAdditionalDetailDto,
+				Messages.RentalAdditionalListed);
+	}
+
+	@Override
 	public Result add(CreateRentalAdditionalRequest createRentalAdditionalRequest) {
 
 		var result = BusinessRules.run(this
@@ -54,9 +84,8 @@ public class RentalAdditionalManager implements RentalAdditionalService {
 			return result;
 		}
 
-		RentalAdditional rentalAdditional = new RentalAdditional();
-		rentalAdditional.setRentalAdditionalName(createRentalAdditionalRequest.getRentalAdditionalName());
-		rentalAdditional.setDailyPrice(createRentalAdditionalRequest.getDailyPrice());
+		RentalAdditional rentalAdditional = modelMapperService.forRequest().map(createRentalAdditionalRequest,
+				RentalAdditional.class);
 
 		this.rentalAdditionalDao.save(rentalAdditional);
 

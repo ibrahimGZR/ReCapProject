@@ -18,7 +18,9 @@ public interface InvoiceService {
 
 	DataResult<InvoiceDetailDto> getInvoiceDetailByRentalId(int rentalId);
 
-	DataResult<List<InvoiceDetailDto>> getByRental_ApplicationUser_UserId(int userId);
+	DataResult<List<InvoiceDetailDto>> getInvoiceDetailsByUserId(int userId);
+	
+	DataResult<List<InvoiceDetailDto>> getByCreationDateBetween(InvoiceBetweenDateRequest invoiceBetweenDateRequest);
 
 	Result add(CreateInvoiceRequest createInvoiceRequest);
 
@@ -26,6 +28,6 @@ public interface InvoiceService {
 
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest);
 
-	DataResult<List<Invoice>> getByCreationDateBetween(InvoiceBetweenDateRequest invoiceBetweenDateRequest);
+	
 
 }

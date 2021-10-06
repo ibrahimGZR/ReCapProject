@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.etiya.ReCapProject.business.abstracts.AuthService;
 import com.etiya.ReCapProject.business.abstracts.InvoiceDetailService;
 import com.etiya.ReCapProject.business.abstracts.InvoiceService;
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
@@ -22,9 +23,7 @@ import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.core.utilities.results.SuccessDataResult;
 import com.etiya.ReCapProject.core.utilities.results.SuccessResult;
 import com.etiya.ReCapProject.dataAccess.abstracts.InvoiceDao;
-import com.etiya.ReCapProject.entities.concretes.Car;
 import com.etiya.ReCapProject.entities.concretes.Invoice;
-import com.etiya.ReCapProject.entities.concretes.InvoiceDetail;
 import com.etiya.ReCapProject.entities.concretes.Rental;
 import com.etiya.ReCapProject.entities.dtos.InvoiceDetailDto;
 import com.etiya.ReCapProject.entities.requests.InvoiceBetweenDateRequest;
@@ -39,13 +38,16 @@ public class InvoiceManager implements InvoiceService {
 	private InvoiceDao invoiceDao;
 	private InvoiceDetailService invoiceDetailService;
 	private AuthService authService;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public InvoiceManager(InvoiceDao invoiceDao, InvoiceDetailService invoiceDetailService, AuthService authService) {
+	public InvoiceManager(InvoiceDao invoiceDao, InvoiceDetailService invoiceDetailService, AuthService authService,
+			ModelMapperService modelMapperService) {
 		super();
 		this.invoiceDao = invoiceDao;
 		this.invoiceDetailService = invoiceDetailService;
 		this.authService = authService;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -63,24 +65,11 @@ public class InvoiceManager implements InvoiceService {
 
 		Invoice invoice = this.invoiceDao.getByRental_RentalId(rentalId);
 
-		InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
-		invoiceDetailDto.setInvoiceNo(invoice.getInvoiceNo());
-		invoiceDetailDto.setCreationDate(invoice.getCreationDate());
-
-		Rental rental = invoice.getRental();
-		invoiceDetailDto.setCustomerDto(
-				this.authService.returnLoginedCustomerDto(rental.getApplicationUser().getEmail()).getData());
-		invoiceDetailDto.setRentDate(rental.getRentDate());
-		invoiceDetailDto.setReturnDate(rental.getReturnDate());
-
-		Car car = rental.getCar();
-		invoiceDetailDto.setCarName(car.getCarName());
-		invoiceDetailDto.setBrandName(car.getBrand().getBrandName());
-		invoiceDetailDto.setColorName(car.getColor().getColorName());
-
-		List<InvoiceDetail> invoiceDetail = invoice.getInvoiceDetails();
-		invoiceDetailDto.setInvoiceDetails(invoiceDetail);
-
+		InvoiceDetailDto invoiceDetailDto = modelMapperService.forDto().map(invoice, InvoiceDetailDto.class);
+		invoiceDetailDto.setCustomerDto(this.authService
+				.getCustomerDtoByEmail(invoice.getRental().getApplicationUser().getEmail()).getData());
+		invoiceDetailDto.setInvoiceDetailDetailDtos(
+				this.invoiceDetailService.getInvoiceDetailDetailsByInvoiceId(invoice.getInvoiceId()).getData());
 		invoiceDetailDto.setTotalPrice(
 				this.invoiceDetailService.getSumtotalPriceByInvoice_InvoiceId(invoice.getInvoiceId()).getData());
 
@@ -88,7 +77,7 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public DataResult<List<InvoiceDetailDto>> getByRental_ApplicationUser_UserId(int userId) {
+	public DataResult<List<InvoiceDetailDto>> getInvoiceDetailsByUserId(int userId) {
 
 		List<Invoice> invoices = this.invoiceDao.getByRental_ApplicationUser_UserId(userId);
 
@@ -96,25 +85,12 @@ public class InvoiceManager implements InvoiceService {
 
 		for (Invoice invoice : invoices) {
 
-			InvoiceDetailDto invoiceDetailDto = new InvoiceDetailDto();
+			InvoiceDetailDto invoiceDetailDto = modelMapperService.forDto().map(invoice, InvoiceDetailDto.class);
 
-			invoiceDetailDto.setInvoiceNo(invoice.getInvoiceNo());
-			invoiceDetailDto.setCreationDate(invoice.getCreationDate());
-
-			Rental rental = invoice.getRental();
-			invoiceDetailDto.setCustomerDto(
-					this.authService.returnLoginedCustomerDto(rental.getApplicationUser().getEmail()).getData());
-			invoiceDetailDto.setRentDate(rental.getRentDate());
-			invoiceDetailDto.setReturnDate(rental.getReturnDate());
-
-			Car car = rental.getCar();
-			invoiceDetailDto.setCarName(car.getCarName());
-			invoiceDetailDto.setBrandName(car.getBrand().getBrandName());
-			invoiceDetailDto.setColorName(car.getColor().getColorName());
-
-			List<InvoiceDetail> invoiceDetail = invoice.getInvoiceDetails();
-			invoiceDetailDto.setInvoiceDetails(invoiceDetail);
-
+			invoiceDetailDto.setCustomerDto(this.authService
+					.getCustomerDtoByEmail(invoice.getRental().getApplicationUser().getEmail()).getData());
+			invoiceDetailDto.setInvoiceDetailDetailDtos(
+					this.invoiceDetailService.getInvoiceDetailDetailsByInvoiceId(invoice.getInvoiceId()).getData());
 			invoiceDetailDto.setTotalPrice(
 					this.invoiceDetailService.getSumtotalPriceByInvoice_InvoiceId(invoice.getInvoiceId()).getData());
 
@@ -139,7 +115,7 @@ public class InvoiceManager implements InvoiceService {
 
 		Invoice invoice = new Invoice();
 		invoice.setCreationDate(dateNow);
-		invoice.setInvoiceNo(returnInvoiceNo(dateNow).getData());
+		invoice.setInvoiceNo(this.returnInvoiceNo(dateNow).getData());
 		invoice.setRental(rental);
 
 		this.invoiceDao.save(invoice);
@@ -165,18 +141,31 @@ public class InvoiceManager implements InvoiceService {
 	public Result delete(DeleteInvoiceRequest deleteInvoiceRequest) {
 
 		Invoice invoice = this.invoiceDao.getById(deleteInvoiceRequest.getInvoiceId());
+
 		this.invoiceDao.delete(invoice);
 
 		return new SuccessResult(Messages.InvoiceDeleted);
 	}
 
 	@Override
-	public DataResult<List<Invoice>> getByCreationDateBetween(InvoiceBetweenDateRequest invoiceBetweenDateRequest) {
+	public DataResult<List<InvoiceDetailDto>> getByCreationDateBetween(
+			InvoiceBetweenDateRequest invoiceBetweenDateRequest) {
 
-		return new SuccessDataResult<List<Invoice>>(
-				this.invoiceDao.getByCreationDateBetween(invoiceBetweenDateRequest.getMinDate(),
-						invoiceBetweenDateRequest.getMaxDate()),
-				Messages.InvoicesListedByBetweenDate);
+		List<Invoice> invoices = this.invoiceDao.getByCreationDateBetween(invoiceBetweenDateRequest.getMinDate(),
+				invoiceBetweenDateRequest.getMaxDate());
+
+		List<InvoiceDetailDto> invoiceDetailDtos = new ArrayList<InvoiceDetailDto>();
+
+		for (Invoice invoice : invoices) {
+
+			InvoiceDetailDto invoiceDetailDto = modelMapperService.forDto().map(invoice, InvoiceDetailDto.class);
+			invoiceDetailDto.setCustomerDto(this.authService
+					.getCustomerDtoByEmail(invoice.getRental().getApplicationUser().getEmail()).getData());
+
+			invoiceDetailDtos.add(invoiceDetailDto);
+		}
+
+		return new SuccessDataResult<List<InvoiceDetailDto>>(invoiceDetailDtos, Messages.InvoicesListedByBetweenDate);
 	}
 
 	// Kiralama işlemine ait faturanın olup olmadığının kontrolünü yapar

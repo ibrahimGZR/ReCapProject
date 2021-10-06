@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,15 +34,15 @@ public class CitiesController {
 		this.cityService = cityService;
 	}
 
-	@GetMapping("/getAll")
-	public DataResult<List<City>> getAll() {
-		return this.cityService.getAll();
-	}
-
-	@GetMapping("/getbyid")
-	public DataResult<City> getById(@RequestParam("cityId") int cityId) {
-		return this.cityService.getById(cityId);
-	}
+//	@GetMapping("/getAll")
+//	public DataResult<List<City>> getAll() {
+//		return this.cityService.getAll();
+//	}
+//
+//	@GetMapping("/getbyid")
+//	public DataResult<City> getById(@RequestParam("cityId") int cityId) {
+//		return this.cityService.getById(cityId);
+//	}
 
 	@GetMapping("/getCitysDetail")
 	public DataResult<List<CityDetailDto>> getCitysDetail() {
@@ -57,13 +59,13 @@ public class CitiesController {
 		return this.cityService.add(createCityRequest);
 	}
 
-	@PostMapping("/update")
+	@PutMapping("/update")
 	public Result update(@Valid @RequestBody UpdateCityRequest updateCityRequest) {
 		return this.cityService.update(updateCityRequest);
 	}
 
-	@PostMapping("/delete")
-	public Result delte(DeleteCityRequest deleteCityRequest) {
+	@DeleteMapping("/delete")
+	public Result delte(@Valid DeleteCityRequest deleteCityRequest) {
 		return this.cityService.delete(deleteCityRequest);
 	}
 }

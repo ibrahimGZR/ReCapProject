@@ -3,7 +3,6 @@ package com.etiya.ReCapProject.entities.dtos;
 import java.util.Date;
 import java.util.List;
 
-import com.etiya.ReCapProject.entities.concretes.InvoiceDetail;
 import com.etiya.ReCapProject.entities.dtos.abstracts.CustomerDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -35,7 +34,7 @@ public class InvoiceDetailDto {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date returnDate;
 
-	private List<InvoiceDetail> invoiceDetails;
+	private List<InvoiceDetailDetailDto> invoiceDetailDetailDtos;
 
 	private double totalPrice;
 

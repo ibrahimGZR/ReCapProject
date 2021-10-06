@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.IndividualCustomerService;
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
@@ -26,12 +27,15 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	private IndividualCustomerDao individualCustomerDao;
 	private UserService userService;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public IndividualCustomerManager(IndividualCustomerDao individualCustomerDao, UserService userService) {
+	public IndividualCustomerManager(IndividualCustomerDao individualCustomerDao, UserService userService,
+			ModelMapperService modelMapperService) {
 		super();
 		this.individualCustomerDao = individualCustomerDao;
 		this.userService = userService;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -53,10 +57,8 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(individualCustomerId);
 
-		IndividualCustomerDetailDto individualCustomerDetailDto = new IndividualCustomerDetailDto();
-		individualCustomerDetailDto.setFirstName(individualCustomer.getFirstName());
-		individualCustomerDetailDto.setLastName(individualCustomer.getLastName());
-		individualCustomerDetailDto.setNationalIdentityNumber(individualCustomer.getNationalIdentityNumber());
+		IndividualCustomerDetailDto individualCustomerDetailDto = modelMapperService.forDto().map(individualCustomer,
+				IndividualCustomerDetailDto.class);
 		individualCustomerDetailDto.setEmail(individualCustomer.getApplicationUser().getEmail());
 
 		return new SuccessDataResult<IndividualCustomerDetailDto>(individualCustomerDetailDto,
@@ -76,14 +78,13 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		ApplicationUser applicationUser = this.userService.getById(createIndividualCustomerRequest.getUserId())
 				.getData();
 
-		IndividualCustomer individualCustomer = new IndividualCustomer();
-		individualCustomer.setFirstName(createIndividualCustomerRequest.getFirstName());
-		individualCustomer.setLastName(createIndividualCustomerRequest.getLastName());
-		individualCustomer.setNationalIdentityNumber(createIndividualCustomerRequest.getNationalIdentityNumber());
+		IndividualCustomer individualCustomer = modelMapperService.forRequest().map(createIndividualCustomerRequest,
+				IndividualCustomer.class);
 
 		individualCustomer.setApplicationUser(applicationUser);
 
 		this.individualCustomerDao.save(individualCustomer);
+
 		return new SuccessResult(Messages.CustomerAdded);
 	}
 
@@ -109,6 +110,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 				.getById(deleteIndividualCustomerRequest.getIndividualCustomerId());
 
 		this.individualCustomerDao.delete(individualCustomer);
+
 		return new SuccessResult(Messages.CustomerDeleted);
 	}
 

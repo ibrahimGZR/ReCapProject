@@ -3,11 +3,11 @@ package com.etiya.ReCapProject.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.ColorService;
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
@@ -26,13 +26,13 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateColorRequest;
 public class ColorManager implements ColorService {
 
 	private ColorDao colorDao;
-	private ModelMapper modelMapper;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public ColorManager(ColorDao colorDao, ModelMapper modelMapper) {
+	public ColorManager(ColorDao colorDao, ModelMapperService modelMapperService) {
 		super();
 		this.colorDao = colorDao;
-		this.modelMapper = modelMapper;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -53,7 +53,8 @@ public class ColorManager implements ColorService {
 		List<Color> colors = this.colorDao.findAll();
 
 		List<ColorDetailDto> colorDetailDtos = colors.stream()
-				.map(color -> modelMapper.map(color, ColorDetailDto.class)).collect(Collectors.toList());
+				.map(color -> modelMapperService.forDto().map(color, ColorDetailDto.class))
+				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<ColorDetailDto>>(colorDetailDtos, Messages.ColorsListed);
 	}
@@ -63,7 +64,7 @@ public class ColorManager implements ColorService {
 
 		Color color = this.colorDao.getById(colorId);
 
-		return new SuccessDataResult<ColorDetailDto>(modelMapper.map(color, ColorDetailDto.class),
+		return new SuccessDataResult<ColorDetailDto>(modelMapperService.forDto().map(color, ColorDetailDto.class),
 				Messages.ColorListed);
 	}
 
@@ -76,8 +77,7 @@ public class ColorManager implements ColorService {
 			return result;
 		}
 
-		Color color = new Color();
-		color.setColorName(createColorRequest.getColorName());
+		Color color = modelMapperService.forRequest().map(createColorRequest, Color.class);
 
 		this.colorDao.save(color);
 		return new SuccessResult(Messages.ColorAdded);

@@ -19,7 +19,7 @@ public interface InvoiceDetailService {
 
 	DataResult<InvoiceDetailDetailDto> getInvoiceDetailDetailById(int invoiceDetailId);
 
-	DataResult<List<InvoiceDetail>> getInvoiceDetailsByInvoiceId(int invoiceId);
+	DataResult<List<InvoiceDetailDetailDto>> getInvoiceDetailDetailsByInvoiceId(int invoiceId);
 
 	DataResult<Double> getSumtotalPriceByInvoice_InvoiceId(int invoiceId);
 

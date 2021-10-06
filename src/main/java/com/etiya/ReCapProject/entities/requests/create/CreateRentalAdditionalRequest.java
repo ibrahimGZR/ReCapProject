@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateRentalAdditionalRequest {
-	
+
 	@NotNull
 	@NotBlank
 	private String rentalAdditionalName;
-	
+
 	@NotNull
 	@Min(0)
 	private double dailyPrice;

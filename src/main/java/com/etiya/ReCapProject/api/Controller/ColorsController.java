@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,15 +34,15 @@ public class ColorsController {
 		this.colorService = colorService;
 	}
 
-	@GetMapping("/getAll")
-	public DataResult<List<Color>> getAll() {
-		return this.colorService.getAll();
-	}
-
-	@GetMapping("/getbyid")
-	public DataResult<Color> getById(@RequestParam("colorId") int colorId) {
-		return this.colorService.getById(colorId);
-	}
+//	@GetMapping("/getAll")
+//	public DataResult<List<Color>> getAll() {
+//		return this.colorService.getAll();
+//	}
+//
+//	@GetMapping("/getbyid")
+//	public DataResult<Color> getById(@RequestParam("colorId") int colorId) {
+//		return this.colorService.getById(colorId);
+//	}
 
 	@GetMapping("/getColorsDetail")
 	public DataResult<List<ColorDetailDto>> getColorsDetail() {
@@ -57,13 +59,13 @@ public class ColorsController {
 		return this.colorService.add(createColorRequest);
 	}
 
-	@PostMapping("/update")
+	@PutMapping("/update")
 	public Result update(@Valid @RequestBody UpdateColorRequest updateColorRequest) {
 		return this.colorService.update(updateColorRequest);
 	}
 
-	@PostMapping("/delete")
-	public Result delte(DeleteColorRequest deleteColorRequest) {
+	@DeleteMapping("/delete")
+	public Result delte(@Valid DeleteColorRequest deleteColorRequest) {
 		return this.colorService.delete(deleteColorRequest);
 	}
 }

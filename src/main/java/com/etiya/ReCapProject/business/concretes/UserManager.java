@@ -2,10 +2,10 @@ package com.etiya.ReCapProject.business.concretes;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.business.BusinessRules;
@@ -24,13 +24,13 @@ import com.etiya.ReCapProject.entities.requests.update.UpdateApplicationUserRequ
 public class UserManager implements UserService {
 
 	private ApplicationUserDao applicationUserDao;
-	private ModelMapper modelMapper;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public UserManager(ApplicationUserDao applicationUserDao, ModelMapper modelMapper) {
+	public UserManager(ApplicationUserDao applicationUserDao, ModelMapperService modelMapperService) {
 		super();
 		this.applicationUserDao = applicationUserDao;
-		this.modelMapper = modelMapper;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -54,10 +54,11 @@ public class UserManager implements UserService {
 			return result;
 		}
 
-		ApplicationUser applicationUser = modelMapper.map(createApplicationUserRequest, ApplicationUser.class);
+		ApplicationUser applicationUser = modelMapperService.forRequest().map(createApplicationUserRequest,
+				ApplicationUser.class);
 
 		this.applicationUserDao.save(applicationUser);
-		
+
 		return new SuccessResult(Messages.UserAdded);
 	}
 
@@ -69,9 +70,9 @@ public class UserManager implements UserService {
 		if (result != null) {
 			return result;
 		}
-		ApplicationUser applicationUser = this.applicationUserDao.getById(updateApplicationUserRequest.getUserId());
-		applicationUser.setEmail(updateApplicationUserRequest.getEmail());
-		applicationUser.setPassword(updateApplicationUserRequest.getPassword());
+
+		ApplicationUser applicationUser = modelMapperService.forRequest().map(updateApplicationUserRequest,
+				ApplicationUser.class);
 
 		this.applicationUserDao.save(applicationUser);
 		return new SuccessResult(Messages.UserUpdated);
@@ -80,7 +81,8 @@ public class UserManager implements UserService {
 	@Override
 	public Result delete(DeleteApplicationUserRequest deleteApplicationUserRequest) {
 
-		ApplicationUser applicationUser = this.applicationUserDao.getById(deleteApplicationUserRequest.getUserId());
+		ApplicationUser applicationUser = modelMapperService.forRequest().map(deleteApplicationUserRequest,
+				ApplicationUser.class);
 
 		this.applicationUserDao.delete(applicationUser);
 		return new SuccessResult(Messages.UserDeleted);

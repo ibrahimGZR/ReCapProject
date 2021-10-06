@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,15 +35,15 @@ public class RentalsController {
 		this.rentalService = rentalService;
 	}
 
-	@GetMapping("/getAll")
-	public DataResult<List<Rental>> getAll() {
-		return this.rentalService.getAll();
-	}
-
-	@GetMapping("/getbyid")
-	public DataResult<Rental> getById(@RequestParam("rentalId") int rentalId) {
-		return this.rentalService.getById(rentalId);
-	}
+//	@GetMapping("/getAll")
+//	public DataResult<List<Rental>> getAll() {
+//		return this.rentalService.getAll();
+//	}
+//
+//	@GetMapping("/getbyid")
+//	public DataResult<Rental> getById(@RequestParam("rentalId") int rentalId) {
+//		return this.rentalService.getById(rentalId);
+//	}
 
 	@GetMapping("/getRentalDetailsByRentalId")
 	public DataResult<RentalDetailDto> getRentalDetailsByRentalId(@RequestParam("rentalId") int rentalId) {
@@ -59,12 +61,12 @@ public class RentalsController {
 		return this.rentalService.add(createRentalRequest);
 	}
 
-	@PostMapping("/update")
+	@PutMapping("/update")
 	public Result update(@Valid @RequestBody UpdateRentalRequest updateRentalRequest) {
 		return this.rentalService.update(updateRentalRequest);
 	}
 
-	@PostMapping("/delete")
+	@DeleteMapping("/delete")
 	public Result delte(@Valid DeleteRentalRequest deleteRentalRequest) {
 		return this.rentalService.delete(deleteRentalRequest);
 	}

@@ -15,13 +15,13 @@ public class CreateCarMaintenanceRequest {
 
 	@NotNull
 	private Date maintenanceDate;
-	
+
 	@NotNull
 	private Date returnDate;
-	
+
 	@NotNull
 	private String description;
-	
+
 	@NotNull
 	private int carId;
 }

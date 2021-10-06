@@ -5,8 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,15 +34,15 @@ public class CarsController {
 		this.carService = carService;
 	}
 
-	@GetMapping("/getAll")
-	public DataResult<List<Car>> getAll() {
-		return this.carService.getAll();
-	}
-
-	@GetMapping("/getbyid")
-	public DataResult<Car> getById(@RequestParam("carId") int carId) {
-		return this.carService.getById(carId);
-	}
+//	@GetMapping("/getAll")
+//	public DataResult<List<Car>> getAll() {
+//		return this.carService.getAll();
+//	}
+//
+//	@GetMapping("/getbyid")
+//	public DataResult<Car> getById(@RequestParam("carId") int carId) {
+//		return this.carService.getById(carId);
+//	}
 
 	@GetMapping("/getcarsDetails")
 	public DataResult<List<CarDetailDto>> getCarsDetails() {
@@ -72,13 +74,13 @@ public class CarsController {
 		return this.carService.add(createCarRequest);
 	}
 
-	@PostMapping("/update")
+	@PutMapping("/update")
 	public Result update(@Valid @RequestBody UpdateCarRequest updateCarRequest) {
 		return this.carService.update(updateCarRequest);
 	}
 
-	@PostMapping("/delete")
-	public Result delete(DeleteCarRequest deleteCarRequest) {
+	@DeleteMapping("/delete")
+	public Result delete(@Valid DeleteCarRequest deleteCarRequest) {
 		return this.carService.delete(deleteCarRequest);
 	}
 }

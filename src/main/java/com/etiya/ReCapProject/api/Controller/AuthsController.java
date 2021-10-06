@@ -3,6 +3,7 @@ package com.etiya.ReCapProject.api.Controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import com.etiya.ReCapProject.entities.requests.RegisterIndividualCustomerReques
 @RestController
 @RequestMapping("api/auths")
 public class AuthsController {
-	private AuthService authService; 
+	private AuthService authService;
 
 	@Autowired
 	public AuthsController(AuthService authService) {
@@ -45,9 +46,9 @@ public class AuthsController {
 		return this.authService.login(loginRequest);
 	}
 
-	@PostMapping("/returnLoginedCustomerDto")
-	DataResult<CustomerDto> returnLoginedCustomerDto(@RequestParam("email") String email) {
-		return this.authService.returnLoginedCustomerDto(email);
+	@GetMapping("/getCustomerDtoByEmail")
+	DataResult<CustomerDto> getCustomerDtoByEmail(@RequestParam("email") String email) {
+		return this.authService.getCustomerDtoByEmail(email);
 	}
 
 }

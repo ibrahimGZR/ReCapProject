@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCarDamageInformationRequest {
-	
+
 	@NotBlank
 	@NotNull
 	@Size(max = 250)

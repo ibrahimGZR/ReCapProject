@@ -9,9 +9,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +21,7 @@ import com.etiya.ReCapProject.core.utilities.results.Result;
 import com.etiya.ReCapProject.entities.concretes.Invoice;
 import com.etiya.ReCapProject.entities.dtos.InvoiceDetailDto;
 import com.etiya.ReCapProject.entities.requests.InvoiceBetweenDateRequest;
-import com.etiya.ReCapProject.entities.requests.create.CreateInvoiceRequest;
+import com.etiya.ReCapProject.entities.requests.delete.DeleteInvoiceRequest;
 
 @RestController
 @RequestMapping("api/ainvoices")
@@ -36,24 +35,19 @@ public class InvoicesController {
 		this.invoiceService = invoiceService;
 	}
 
-	@PostMapping("/add")
-	Result add(@Valid @RequestBody CreateInvoiceRequest createInvoiceRequest) {
-		return this.invoiceService.add(createInvoiceRequest);
-	}
+//	@GetMapping("/getall")
+//	public DataResult<List<Invoice>> getAll() {
+//		return this.invoiceService.getAll();
+//	}
+//
+//	@GetMapping("/getbyid")
+//	public DataResult<Invoice> getById(@RequestParam("invoiceId") int invoiceId) {
+//		return this.invoiceService.getById(invoiceId);
+//	}
 
-	@GetMapping("/getall")
-	public DataResult<List<Invoice>> getAll() {
-		return this.invoiceService.getAll();
-	}
-
-	@GetMapping("/getbyid")
-	public DataResult<Invoice> getById(@RequestParam("invoiceId") int invoiceId) {
-		return this.invoiceService.getById(invoiceId);
-	}
-
-	@GetMapping("/getByUserId")
-	public DataResult<List<InvoiceDetailDto>> getByRental_ApplicationUser_UserId(@RequestParam("userId") int userId) {
-		return this.invoiceService.getByRental_ApplicationUser_UserId(userId);
+	@GetMapping("/getInvoiceDetailsByUserId")
+	public DataResult<List<InvoiceDetailDto>> getInvoiceDetailsByUserId(@RequestParam("userId") int userId) {
+		return this.invoiceService.getInvoiceDetailsByUserId(userId);
 	}
 
 	@GetMapping("/getInvoiceDetailByRentalId")
@@ -62,7 +56,7 @@ public class InvoicesController {
 	}
 
 	@GetMapping("/getByCreationDateBetween")
-	public DataResult<List<Invoice>> getByCreationDateBetween(@RequestParam("minDate") String minDate,
+	public DataResult<List<InvoiceDetailDto>> getByCreationDateBetween(@RequestParam("minDate") String minDate,
 			@RequestParam("maxDate") String maxDate) throws ParseException {
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,5 +68,10 @@ public class InvoicesController {
 		invoiceBetweenDateRequest.setMaxDate(maxDate1);
 
 		return this.invoiceService.getByCreationDateBetween(invoiceBetweenDateRequest);
+	}
+
+	@DeleteMapping("/delete")
+	public Result delete(@Valid DeleteInvoiceRequest deleteInvoiceRequest) {
+		return this.invoiceService.delete(deleteInvoiceRequest);
 	}
 }

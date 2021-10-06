@@ -19,11 +19,12 @@ public interface CarDamageInformationService {
 
 	DataResult<CarDamageInformationDetailDto> getCarDamageInformationDetailById(int carDamageInformationId);
 
+	DataResult<List<CarDamageInformationDetailDto>> getCarDamageInformationsByCarId(int carId);
+
 	Result add(CreateCarDamageInformationRequest createCarDamageInformationRequest);
 
 	Result update(UpdateCarDamageInformationRequest updateCarDamageInformationRequest);
 
 	Result delete(DeleteCarDamageInformationRequest deleteCarDamageInformationRequest);
 
-	DataResult<List<CarDamageInformation>> getCarDamageInformationsByCarId(int carId);
 }

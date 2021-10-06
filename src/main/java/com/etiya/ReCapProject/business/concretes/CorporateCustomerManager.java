@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.etiya.ReCapProject.business.abstracts.CorporateCustomerService;
+import com.etiya.ReCapProject.business.abstracts.ModelMapperService;
 import com.etiya.ReCapProject.business.abstracts.UserService;
 import com.etiya.ReCapProject.business.constants.Messages;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
@@ -26,12 +27,15 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	private CorporateCustomerDao corporateCustomerDao;
 	private UserService userService;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public CorporateCustomerManager(CorporateCustomerDao corporateCustomerDao, UserService userService) {
+	public CorporateCustomerManager(CorporateCustomerDao corporateCustomerDao, UserService userService,
+			ModelMapperService modelMapperService) {
 		super();
 		this.corporateCustomerDao = corporateCustomerDao;
 		this.userService = userService;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
@@ -53,9 +57,8 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 		CorporateCustomer corporateCustomer = this.corporateCustomerDao.getById(corporateCustomerId);
 
-		CorporateCustomerDetailDto corporateCustomerDetailDto = new CorporateCustomerDetailDto();
-		corporateCustomerDetailDto.setCompanyName(corporateCustomer.getCompanyName());
-		corporateCustomerDetailDto.setTaxNumber(corporateCustomer.getTaxNumber());
+		CorporateCustomerDetailDto corporateCustomerDetailDto = modelMapperService.forDto().map(corporateCustomer,
+				CorporateCustomerDetailDto.class);
 		corporateCustomerDetailDto.setEmail(corporateCustomer.getApplicationUser().getEmail());
 
 		return new SuccessDataResult<CorporateCustomerDetailDto>(corporateCustomerDetailDto,
@@ -75,9 +78,8 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		ApplicationUser applicationUser = this.userService.getById(createCorporateCustomerRequest.getUserId())
 				.getData();
 
-		CorporateCustomer corporateCustomer = new CorporateCustomer();
-		corporateCustomer.setCompanyName(createCorporateCustomerRequest.getCompanyName());
-		corporateCustomer.setTaxNumber(createCorporateCustomerRequest.getTaxNumber());
+		CorporateCustomer corporateCustomer = modelMapperService.forRequest().map(createCorporateCustomerRequest,
+				CorporateCustomer.class);
 
 		corporateCustomer.setApplicationUser(applicationUser);
 
@@ -95,7 +97,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		corporateCustomer.setTaxNumber(updateCorporateCustomerRequest.getTaxNumber());
 
 		this.corporateCustomerDao.save(corporateCustomer);
-		return new SuccessResult(Messages.CustomerAdded);
+		return new SuccessResult(Messages.CustomerUpdated);
 	}
 
 	@Override
@@ -105,6 +107,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 				.getById(deleteCorporateCustomerRequest.getCorporateCustomerId());
 
 		this.corporateCustomerDao.delete(corporateCustomer);
+
 		return new SuccessResult(Messages.CustomerDeleted);
 	}
 
