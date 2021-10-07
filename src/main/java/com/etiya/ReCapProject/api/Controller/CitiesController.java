@@ -34,10 +34,10 @@ public class CitiesController {
 		this.cityService = cityService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<City>> getAll() {
-//		return this.cityService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<City>> getAll() {
+		return this.cityService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<City> getById(@RequestParam("cityId") int cityId) {

@@ -32,10 +32,10 @@ public class CorporateCustomersController {
 		this.corporateCustomerService = corporateCustomerService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<CorporateCustomer>> getAll() {
-//		return this.corporateCustomerService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<CorporateCustomer>> getAll() {
+		return this.corporateCustomerService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<CorporateCustomer> getById(@RequestParam("customerId") int customerId) {

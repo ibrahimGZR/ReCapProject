@@ -35,10 +35,10 @@ public class InvoicesController {
 		this.invoiceService = invoiceService;
 	}
 
-//	@GetMapping("/getall")
-//	public DataResult<List<Invoice>> getAll() {
-//		return this.invoiceService.getAll();
-//	}
+	@GetMapping("/getall")
+	public DataResult<List<Invoice>> getAll() {
+		return this.invoiceService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<Invoice> getById(@RequestParam("invoiceId") int invoiceId) {

@@ -35,10 +35,10 @@ public class RentalAdditionalsController {
 		this.rentalAdditionalService = rentalAdditionalService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<RentalAdditional>> getAll() {
-//		return this.rentalAdditionalService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<RentalAdditional>> getAll() {
+		return this.rentalAdditionalService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<RentalAdditional> getById(@RequestParam("rentalAdditionalId") int rentalAdditionalId) {

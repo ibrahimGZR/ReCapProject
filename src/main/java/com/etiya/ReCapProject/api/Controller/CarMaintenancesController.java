@@ -34,10 +34,10 @@ public class CarMaintenancesController {
 		this.carMaintenanceService = carMaintenanceService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<CarMaintenance>> getAll() {
-//		return this.carMaintenanceService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<CarMaintenance>> getAll() {
+		return this.carMaintenanceService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<CarMaintenance> getById(@RequestParam("carMaintenanceId") int carMaintenanceId) {

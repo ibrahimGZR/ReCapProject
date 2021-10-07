@@ -1,6 +1,7 @@
 package com.etiya.ReCapProject.entities.requests.create;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.sun.istack.NotNull;
 
@@ -23,6 +24,7 @@ public class CreateIndividualCustomerRequest {
 
 	@NotBlank
 	@NotNull
+	@Size(min = 11, max = 11)
 	private String nationalIdentityNumber;
 
 	@NotNull

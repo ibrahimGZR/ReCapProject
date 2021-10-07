@@ -31,11 +31,11 @@ public class IndividualCustomersController {
 		super();
 		this.individualCustomerService = individualCustomerService;
 	}
-//
-//	@GetMapping("/getAll")
-//	public DataResult<List<IndividualCustomer>> getAll() {
-//		return this.individualCustomerService.getAll();
-//	}
+
+	@GetMapping("/getAll")
+	public DataResult<List<IndividualCustomer>> getAll() {
+		return this.individualCustomerService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<IndividualCustomer> getById(@RequestParam("customerId") int customerId) {

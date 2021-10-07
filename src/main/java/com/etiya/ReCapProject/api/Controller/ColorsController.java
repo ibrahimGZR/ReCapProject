@@ -34,10 +34,10 @@ public class ColorsController {
 		this.colorService = colorService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<Color>> getAll() {
-//		return this.colorService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<Color>> getAll() {
+		return this.colorService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<Color> getById(@RequestParam("colorId") int colorId) {

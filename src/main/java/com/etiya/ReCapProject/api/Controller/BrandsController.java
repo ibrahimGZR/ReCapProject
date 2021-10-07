@@ -34,10 +34,10 @@ public class BrandsController {
 		this.brandService = brandService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<Brand>> getAll() {
-//		return this.brandService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<Brand>> getAll() {
+		return this.brandService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<Brand> getById(@RequestParam("brandId") int brandId) {

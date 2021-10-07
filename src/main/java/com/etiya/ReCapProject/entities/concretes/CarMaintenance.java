@@ -28,7 +28,7 @@ public class CarMaintenance {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "car_maintenance_id")
 	private int carMaintenanseId;
-	
+
 	@Column(name = "description")
 	private String description;
 
@@ -37,9 +37,9 @@ public class CarMaintenance {
 
 	@Column(name = "return_date")
 	private Date returnDate;
-	
-	@Column(name = "is_car_returned", columnDefinition = "boolean default false")
-	private boolean isCarReturned;
+
+	@Column(name = "is_car_returned")
+	private boolean isCarReturned = false;
 
 	@ManyToOne
 	@JoinColumn(name = "car_id")

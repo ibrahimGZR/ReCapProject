@@ -1,5 +1,7 @@
 package com.etiya.ReCapProject.entities.requests.create;
 
+import javax.validation.constraints.Size;
+
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ public class CreateCorporateCustomerRequest {
 	private String companyName;
 
 	@NotNull
+	@Size(min = 10, max = 10)
 	private String taxNumber;
 
 	@NotNull

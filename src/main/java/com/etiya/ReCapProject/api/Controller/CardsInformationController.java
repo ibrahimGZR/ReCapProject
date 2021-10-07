@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.etiya.ReCapProject.business.abstracts.CardInformationService;
 import com.etiya.ReCapProject.core.utilities.results.DataResult;
 import com.etiya.ReCapProject.core.utilities.results.Result;
-import com.etiya.ReCapProject.entities.concretes.CardInformation;
 import com.etiya.ReCapProject.entities.dtos.CardInformationDto;
 import com.etiya.ReCapProject.entities.requests.create.CreateCardInformationRequest;
 import com.etiya.ReCapProject.entities.requests.delete.DeleteCardInformationRequest;

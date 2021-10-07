@@ -179,7 +179,7 @@ public class RentalManager implements RentalService {
 
 		City returnCity = this.cityService.getById(createRentalRequest.getReturnCityId()).getData();
 
-		Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
+		Rental rental =  modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 
 		rental.setCar(car);
 		rental.setRentKilometer(car.getKilometer());
@@ -187,15 +187,8 @@ public class RentalManager implements RentalService {
 		rental.setTakeCity(takeCity);
 		rental.setReturnCity(returnCity);
 
-		List<RentalAdditional> rentalAdditionals = new ArrayList<RentalAdditional>();
-
-		for (int rentalAdditionalId : createRentalRequest.getRentalAdditionalsId()) {
-
-			RentalAdditional rentalAdditional = new RentalAdditional();
-			rentalAdditional.setRentalAdditionalId(rentalAdditionalId);
-
-			rentalAdditionals.add(rentalAdditional);
-		}
+		List<RentalAdditional> rentalAdditionals = this
+				.getRentalAdditionals(createRentalRequest.getRentalAdditionalsId()).getData();
 
 		if (takeCity.getCityId() != returnCity.getCityId()) {
 			RentalAdditional rentalAdditional1 = this.rentalAdditionalService.getById(1).getData();
@@ -223,43 +216,7 @@ public class RentalManager implements RentalService {
 			return result;
 		}
 
-		City returnCity = this.cityService.getById(updateRentalRequest.getReturnCityId()).getData();
-
-		Rental rental = this.rentalDao.getById(updateRentalRequest.getRentalId());
-
-		List<RentalAdditional> rentalAdditionals = new ArrayList<RentalAdditional>();
-
-		if (rental.getReturnCity().getCityId() != returnCity.getCityId()) {
-
-			if (rental.getTakeCity().getCityId() == returnCity.getCityId()) {
-
-				for (RentalAdditional rentalAdditional : rental.getRentalAdditionals()) {
-
-					if (rentalAdditional.getRentalAdditionalId() != 1) {
-
-						rentalAdditionals.add(rentalAdditional);
-					}
-				}
-				rental.setRentalAdditionals(rentalAdditionals);
-			}
-
-			if (rental.getTakeCity().getCityId() == rental.getReturnCity().getCityId()) {
-
-				if (rental.getTakeCity().getCityId() != returnCity.getCityId()) {
-
-					for (RentalAdditional rentalAdditional : rental.getRentalAdditionals()) {
-
-						rentalAdditionals.add(rentalAdditional);
-
-					}
-					RentalAdditional rentalAdditional = this.rentalAdditionalService.getById(1).getData();
-					rentalAdditionals.add(rentalAdditional);
-
-					rental.setRentalAdditionals(rentalAdditionals);
-				}
-			}
-			rental.setReturnCity(returnCity);
-		}
+		Rental rental = this.getUpdatedRental(updateRentalRequest).getData();
 
 		this.rentalDao.save(rental);
 
@@ -372,6 +329,7 @@ public class RentalManager implements RentalService {
 	private Result cardInformationSavedIfCardIsSavedIsTrue(CardInformationDto cardInformationDto, int UserId) {
 
 		CreateCardInformationRequest createCardInformationRequest = new CreateCardInformationRequest();
+		createCardInformationRequest.setCardHolderName(cardInformationDto.getCardHolderName());
 		createCardInformationRequest.setCardName(cardInformationDto.getCardName());
 		createCardInformationRequest.setCardNumber(cardInformationDto.getCardNumber());
 		createCardInformationRequest.setExpirationDate(cardInformationDto.getExpirationDate());
@@ -420,6 +378,66 @@ public class RentalManager implements RentalService {
 		}
 
 		return new SuccessDataResult<Double>(totalPrice);
+	}
+
+	// Id listesi verilen RentalAdditional ları liste şeklinde döner
+	private DataResult<List<RentalAdditional>> getRentalAdditionals(List<Integer> rentalAdditionalIds) {
+
+		List<RentalAdditional> rentalAdditionals = new ArrayList<RentalAdditional>();
+
+		for (int rentalAdditionalId : rentalAdditionalIds) {
+
+			RentalAdditional rentalAdditional = new RentalAdditional();
+			rentalAdditional.setRentalAdditionalId(rentalAdditionalId);
+
+			rentalAdditionals.add(rentalAdditional);
+		}
+
+		return new SuccessDataResult<List<RentalAdditional>>(rentalAdditionals);
+	}
+
+	// Güncellenen returnCity bilgisine göre Rental döndürür
+	private DataResult<Rental> getUpdatedRental(UpdateRentalRequest updateRentalRequest) {
+
+		City returnCity = this.cityService.getById(updateRentalRequest.getReturnCityId()).getData();
+
+		Rental rental = this.rentalDao.getById(updateRentalRequest.getRentalId());
+
+		List<RentalAdditional> rentalAdditionals = new ArrayList<RentalAdditional>();
+
+		if (rental.getReturnCity().getCityId() != returnCity.getCityId()) {
+
+			if (rental.getTakeCity().getCityId() == returnCity.getCityId()) {
+
+				for (RentalAdditional rentalAdditional : rental.getRentalAdditionals()) {
+
+					if (rentalAdditional.getRentalAdditionalId() != 1) {
+
+						rentalAdditionals.add(rentalAdditional);
+					}
+				}
+				rental.setRentalAdditionals(rentalAdditionals);
+			}
+
+			if (rental.getTakeCity().getCityId() == rental.getReturnCity().getCityId()) {
+
+				if (rental.getTakeCity().getCityId() != returnCity.getCityId()) {
+
+					for (RentalAdditional rentalAdditional : rental.getRentalAdditionals()) {
+
+						rentalAdditionals.add(rentalAdditional);
+
+					}
+					RentalAdditional rentalAdditional = this.rentalAdditionalService.getById(1).getData();
+					rentalAdditionals.add(rentalAdditional);
+
+					rental.setRentalAdditionals(rentalAdditionals);
+				}
+			}
+			rental.setReturnCity(returnCity);
+		}
+
+		return new SuccessDataResult<Rental>(rental);
 	}
 
 }

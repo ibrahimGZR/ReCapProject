@@ -35,10 +35,10 @@ public class CarImagesController {
 		this.carImageService = carImageService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<CarImage>> getAll() {
-//		return this.carImageService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<CarImage>> getAll() {
+		return this.carImageService.getAll();
+	}
 //
 //	@GetMapping("/getById")
 //	DataResult<CarImage> getById(int carImageId) {

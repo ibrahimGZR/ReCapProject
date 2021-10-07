@@ -79,6 +79,7 @@ public class CityManager implements CityService {
 		City city = modelMapperService.forRequest().map(createCityRequest, City.class);
 
 		this.cityDao.save(city);
+
 		return new SuccessResult(Messages.CityAdded);
 	}
 

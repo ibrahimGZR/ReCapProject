@@ -10,5 +10,5 @@ public interface CardInformationDao extends JpaRepository<CardInformation, Integ
 
 	List<CardInformation> getCardsInformationByApplicationUser_UserId(int applicationUserId);
 
-	
+	boolean existsByCardNumber(String cardNumber);
 }

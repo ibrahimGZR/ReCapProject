@@ -34,10 +34,10 @@ public class CarsController {
 		this.carService = carService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<Car>> getAll() {
-//		return this.carService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<Car>> getAll() {
+		return this.carService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<Car> getById(@RequestParam("carId") int carId) {

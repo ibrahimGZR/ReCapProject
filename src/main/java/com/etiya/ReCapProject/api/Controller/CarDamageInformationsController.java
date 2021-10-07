@@ -35,10 +35,10 @@ public class CarDamageInformationsController {
 		this.carDamageInformationService = carDamageInformationService;
 	}
 
-//	@GetMapping("/getAll")
-//	public DataResult<List<CarDamageInformation>> getAll() {
-//		return this.carDamageInformationService.getAll();
-//	}
+	@GetMapping("/getAll")
+	public DataResult<List<CarDamageInformation>> getAll() {
+		return this.carDamageInformationService.getAll();
+	}
 //
 //	@GetMapping("/getbyid")
 //	public DataResult<CarDamageInformation> getById(
