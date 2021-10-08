@@ -44,8 +44,8 @@ public class CardsInformationController {
 //	}
 
 	@GetMapping("/getCardsInformationByUserId")
-	DataResult<List<CardInformationDto>> getCardsInformationByApplicationUser_UserId(int applicationUserId) {
-		return this.cardInformationService.getCardsInformationByApplicationUser_UserId(applicationUserId);
+	DataResult<List<CardInformationDto>> getCardsInformationByUserId(int applicationUserId) {
+		return this.cardInformationService.getCardsInformationByUserId(applicationUserId);
 	}
 
 	@PostMapping("/add")

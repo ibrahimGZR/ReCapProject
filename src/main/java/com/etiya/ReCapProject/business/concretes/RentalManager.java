@@ -124,7 +124,7 @@ public class RentalManager implements RentalService {
 	}
 
 	@Override
-	public DataResult<List<RentalDetailDto>> getRentalsDetailByApplicationUserId(int applicationUserId) {
+	public DataResult<List<RentalDetailDto>> getRentalsDetailByUserId(int applicationUserId) {
 
 		List<Rental> rentals = this.rentalDao.getByApplicationUser_UserId(applicationUserId);
 
@@ -210,6 +210,8 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result update(UpdateRentalRequest updateRentalRequest) {
 
+		
+		
 		var result = BusinessRules.run();
 
 		if (result != null) {
@@ -299,7 +301,7 @@ public class RentalManager implements RentalService {
 
 		if (this.individualCustomerService.existsByUserId(applicationUserId).isSuccess()) {
 			IndividualCustomer individualCustomer = this.individualCustomerService
-					.getByApplicationUser_UserId(applicationUserId).getData();
+					.getByUserId(applicationUserId).getData();
 
 			if (this.carService.getById(carId).getData().getMinFindeksScore() > this.customerFindeksScoreService
 					.getIndivicualScore(individualCustomer.getNationalIdentityNumber())) {
@@ -312,7 +314,7 @@ public class RentalManager implements RentalService {
 		if (this.corporateCustomerService.existsByUserId(applicationUserId).isSuccess()) {
 
 			CorporateCustomer corporateCustomer = this.corporateCustomerService
-					.getByApplicationUser_UserId(applicationUserId).getData();
+					.getByUserId(applicationUserId).getData();
 
 			if (this.carService.getById(carId).getData().getMinFindeksScore() > this.customerFindeksScoreService
 					.getCorporateScore(corporateCustomer.getTaxNumber())) {

@@ -56,7 +56,7 @@ public class CardInformationManager implements CardInformationService {
 	}
 
 	@Override
-	public DataResult<List<CardInformationDto>> getCardsInformationByApplicationUser_UserId(int applicationUserId) {
+	public DataResult<List<CardInformationDto>> getCardsInformationByUserId(int applicationUserId) {
 
 		List<CardInformation> cardInformations = this.cardInformationDao
 				.getCardsInformationByApplicationUser_UserId(applicationUserId);

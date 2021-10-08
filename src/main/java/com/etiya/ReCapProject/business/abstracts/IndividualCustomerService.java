@@ -23,7 +23,7 @@ public interface IndividualCustomerService {
 	
 	Result existsByUserId(int applicationUserId);
 	
-	DataResult<IndividualCustomer> getByApplicationUser_UserId(int applicationUserId);
+	DataResult<IndividualCustomer> getByUserId(int applicationUserId);
 	
 	DataResult<IndividualCustomerDetailDto> getIndividualCustomerDetailsById(int individualCustomerId);
 	

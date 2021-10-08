@@ -19,7 +19,7 @@ public interface RentalService {
 
 	DataResult<RentalDetailDto> getRentalDetailsByRentalId(int rentalId);
 	
-	DataResult<List<RentalDetailDto>> getRentalsDetailByApplicationUserId(int applicationUserId);
+	DataResult<List<RentalDetailDto>> getRentalsDetailByUserId(int applicationUserId);
 
 	Result add(CreateRentalRequest createRentalRequest);
 

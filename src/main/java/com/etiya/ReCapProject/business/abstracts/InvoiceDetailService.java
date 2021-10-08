@@ -21,7 +21,7 @@ public interface InvoiceDetailService {
 
 	DataResult<List<InvoiceDetailDetailDto>> getInvoiceDetailDetailsByInvoiceId(int invoiceId);
 
-	DataResult<Double> getSumtotalPriceByInvoice_InvoiceId(int invoiceId);
+	DataResult<Double> getSumtotalPriceByInvoiceId(int invoiceId);
 
 	Result add(CreateInvoiceDetailRequest createInvoiceDetailRequests);
 

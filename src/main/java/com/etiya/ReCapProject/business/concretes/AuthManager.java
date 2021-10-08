@@ -122,7 +122,7 @@ public class AuthManager implements AuthService {
 				.isSuccess()) {
 
 			IndividualCustomer individualCustomer = this.individualCustomerService
-					.getByApplicationUser_UserId(applicationUser.getUserId()).getData();
+					.getByUserId(applicationUser.getUserId()).getData();
 
 			IndividualCustomerDetailDto individualCustomerDetailDto = modelMapperService.forDto()
 					.map(individualCustomer, IndividualCustomerDetailDto.class);
@@ -135,7 +135,7 @@ public class AuthManager implements AuthService {
 				.isSuccess()) {
 
 			CorporateCustomer corporateCustomer = this.corporateCustomerService
-					.getByApplicationUser_UserId(applicationUser.getUserId()).getData();
+					.getByUserId(applicationUser.getUserId()).getData();
 
 			CorporateCustomerDetailDto corporateCustomerDetailDto = modelMapperService.forDto().map(corporateCustomer,
 					CorporateCustomerDetailDto.class);

@@ -50,10 +50,10 @@ public class RentalsController {
 		return this.rentalService.getRentalDetailsByRentalId(rentalId);
 	}
 
-	@GetMapping("/getRentalsDetailByApplicationUserId")
-	DataResult<List<RentalDetailDto>> getRentalsDetailByApplicationUserId(
+	@GetMapping("/getRentalsDetailByUserId")
+	DataResult<List<RentalDetailDto>> getRentalsDetailByUserId(
 			@RequestParam("applicationUserId") int applicationUserId) {
-		return this.rentalService.getRentalsDetailByApplicationUserId(applicationUserId);
+		return this.rentalService.getRentalsDetailByUserId(applicationUserId);
 	}
 
 	@PostMapping("/add")
@@ -67,7 +67,7 @@ public class RentalsController {
 	}
 
 	@DeleteMapping("/delete")
-	public Result delte(@Valid DeleteRentalRequest deleteRentalRequest) {
+	public Result delete(@Valid DeleteRentalRequest deleteRentalRequest) {
 		return this.rentalService.delete(deleteRentalRequest);
 	}
 

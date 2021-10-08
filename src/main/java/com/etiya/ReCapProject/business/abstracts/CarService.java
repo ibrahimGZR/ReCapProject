@@ -35,5 +35,5 @@ public interface CarService {
 
 	Result carListedIsFalse(int carId);
 
-	DataResult<List<CarDetailDto>> getCarsByCity_CityId(int cityId);
+	DataResult<List<CarDetailDto>> getCarsByCityId(int cityId);
 }

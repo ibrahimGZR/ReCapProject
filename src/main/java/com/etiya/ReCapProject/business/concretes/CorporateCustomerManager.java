@@ -66,7 +66,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	}
 
 	@Override
-	public DataResult<CorporateCustomer> getByApplicationUser_UserId(int applicationUserId) {
+	public DataResult<CorporateCustomer> getByUserId(int applicationUserId) {
 
 		return new SuccessDataResult<CorporateCustomer>(
 				this.corporateCustomerDao.getByApplicationUser_UserId(applicationUserId));

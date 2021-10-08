@@ -15,7 +15,7 @@ public interface CardInformationService {
 
 	DataResult<CardInformation> getById(int cardInformationId); 
 	
-	DataResult<List<CardInformationDto>> getCardsInformationByApplicationUser_UserId(int applicationUserId);
+	DataResult<List<CardInformationDto>> getCardsInformationByUserId(int applicationUserId);
 
 	Result add(CreateCardInformationRequest createCardInformationRequest);
 

@@ -50,7 +50,7 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public DataResult<List<CarDetailDto>> getCarsByCity_CityId(int cityId) {
+	public DataResult<List<CarDetailDto>> getCarsByCityId(int cityId) {
 
 		List<Car> cars = this.carDao.getByCity_CityIdAndIsListedIsTrue(cityId);
 

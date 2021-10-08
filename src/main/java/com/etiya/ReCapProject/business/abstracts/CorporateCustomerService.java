@@ -23,7 +23,7 @@ public interface CorporateCustomerService {
 	
 	Result existsByUserId(int applicationUserId);
 	
-	DataResult<CorporateCustomer> getByApplicationUser_UserId(int applicationUserId);
+	DataResult<CorporateCustomer> getByUserId(int applicationUserId);
 	
 	DataResult<CorporateCustomerDetailDto> getCorporateCustomerDetailsById(int corporateCustomerId);
 }

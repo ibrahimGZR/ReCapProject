@@ -71,7 +71,7 @@ public class InvoiceManager implements InvoiceService {
 		invoiceDetailDto.setInvoiceDetailDetailDtos(
 				this.invoiceDetailService.getInvoiceDetailDetailsByInvoiceId(invoice.getInvoiceId()).getData());
 		invoiceDetailDto.setTotalPrice(
-				this.invoiceDetailService.getSumtotalPriceByInvoice_InvoiceId(invoice.getInvoiceId()).getData());
+				this.invoiceDetailService.getSumtotalPriceByInvoiceId(invoice.getInvoiceId()).getData());
 
 		return new SuccessDataResult<InvoiceDetailDto>(invoiceDetailDto, Messages.InvoiceDetailsByRentalId);
 	}
@@ -92,7 +92,7 @@ public class InvoiceManager implements InvoiceService {
 			invoiceDetailDto.setInvoiceDetailDetailDtos(
 					this.invoiceDetailService.getInvoiceDetailDetailsByInvoiceId(invoice.getInvoiceId()).getData());
 			invoiceDetailDto.setTotalPrice(
-					this.invoiceDetailService.getSumtotalPriceByInvoice_InvoiceId(invoice.getInvoiceId()).getData());
+					this.invoiceDetailService.getSumtotalPriceByInvoiceId(invoice.getInvoiceId()).getData());
 
 			invoiceDetailDtos.add(invoiceDetailDto);
 		}

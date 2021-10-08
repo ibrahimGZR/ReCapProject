@@ -65,8 +65,8 @@ public class CarsController {
 	}
 
 	@GetMapping("/getcarsbycityid")
-	public DataResult<List<CarDetailDto>> getCarsByCity_CityId(@RequestParam("cityId") int cityId) {
-		return this.carService.getCarsByCity_CityId(cityId);
+	public DataResult<List<CarDetailDto>> getCarsByCityId(@RequestParam("cityId") int cityId) {
+		return this.carService.getCarsByCityId(cityId);
 	}
 
 	@PostMapping("/add")

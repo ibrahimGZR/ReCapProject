@@ -155,7 +155,7 @@ public class InvoiceDetailManager implements InvoiceDetailService {
 
 	// Faturaya ait detaların genel toplam tutarını hesaplar
 	@Override
-	public DataResult<Double> getSumtotalPriceByInvoice_InvoiceId(int invoiceId) {
+	public DataResult<Double> getSumtotalPriceByInvoiceId(int invoiceId) {
 
 		if (!this.invoiceDetailDao.existsByInvoice_InvoiceId(invoiceId)) {
 			return new ErrorDataResult<Double>(0.0, "");
